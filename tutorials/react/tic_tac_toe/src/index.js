@@ -6,9 +6,7 @@ import './index.css';
 class Square extends React.Component {
   render () {
     return (
-      <button className="square">
-        {this.props.value}
-      </button>
+      React.createElement('button', {className: 'square'}, this.props.value)
     );
   }
 }
@@ -28,7 +26,7 @@ class Board extends React.Component {
         const squareIdx = x + (boardSize*i) // get 'total' iteration count
         squares.push(this.renderSquare(squareIdx)) // add square to squares array
       }
-      board.push(<div className="board-row">{squares}</div>) // add row of squares to board
+      board.push(React.createElement('div', {className: 'board-row'}, squares))
     }
     return board
   }
@@ -37,10 +35,12 @@ class Board extends React.Component {
     // modified from tutorial to be more DRY
     const status = 'Next player: X';
     return (
-      <div>
-        <div className="status">{status}</div>
-        {this.renderBoard()}
-      </div>
+      React.createElement('div', {},
+        React.createElement('div', {className: 'status'},
+          status,
+          this.renderBoard()
+        )
+      )
     );
   }
 }
@@ -48,15 +48,16 @@ class Board extends React.Component {
 class Game extends React.Component {
   render () {
     return (
-      <div className="game">
-        <div className= "game-board">
+      React.createElement('div', {className: 'game'},
+        React.createElement('div', {className: 'game-board'},
           <Board />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/*TODO*/}</ol>
-        </div>
-      </div>
+        ),
+        React.createElement('div', {className: 'game-info'},
+          React.createElement('div', {}), // TODO
+          React.createElement('ol', {}) // TODO
+        )
+
+      )
     );
   }
 }
