@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const BOARDSIZE = 3
+
+const DEFAULTSTATE = {
+  squares: Array(BOARDSIZE * BOARDSIZE).fill(null),
+  xIsNext: true,
+};
+
+
 function Square(props) {
   return (
     React.createElement('button', {className: 'square', onClick: props.onClick},
@@ -9,10 +17,6 @@ function Square(props) {
     )
   );
 }
-const DEFAULTSTATE = {
-  squares: Array(9).fill(null),
-  xIsNext: true,
-};
 
 class Board extends React.Component {
   constructor(props){
@@ -41,13 +45,12 @@ class Board extends React.Component {
   }
 
   renderBoard() {
-    const boardSize = 3 // TODO move to constant or make configurable by user... to an extent.. (limit 10 or so) (update win conditions accodringly)
 
     let board = [] // array to hold board rows
-    for (let i = 0; i < boardSize; i++) {
+    for (let i = 0; i < BOARDSIZE; i++) {
       let squares = [] // array to hold squares for each row
-      for(let x = 0; x < boardSize; x++) {
-        const squareIdx = x + (boardSize*i) // get 'total' iteration count
+      for(let x = 0; x < BOARDSIZE; x++) {
+        const squareIdx = x + (BOARDSIZE*i) // get 'total' iteration count
         squares.push(this.renderSquare(squareIdx)) // add square to squares array
       }
       board.push(React.createElement('div', {className: 'board-row'}, squares))
@@ -94,25 +97,64 @@ class Game extends React.Component {
 }
 
 function calculateWinner(squares) {
-  // TODO change this to be more dynamic if we allow more than 3x3
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  
+  const boardMap = squares.reduce((acc, square, idx) => {
 
-  for (let i = 0; i < lines.length; i++){
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    const rowIdx = Math.floor(idx/BOARDSIZE) // determine row index
+    if(!acc['horizontals'][rowIdx]) {
+      acc['horizontals'][rowIdx] = [] // initialize row array if undefined
     }
+
+    const colIdx = acc['horizontals'][rowIdx].length // column index based off row
+    acc['horizontals'][rowIdx].push(square) // add square to row
+
+    if (!acc['verticals'][colIdx]) {
+      acc['verticals'][colIdx] = [] // initialize column array if undefined
+    }
+    acc['verticals'][colIdx].push(square) // add square to column
+
+    if (rowIdx === colIdx) {
+      acc['descDiagonal'].push(square) // add squares in descending diagonal range
+    }
+
+    if (colIdx === ((rowIdx - (BOARDSIZE-1)) * -1)) {
+      acc['ascDiagonal'].push(square) // add squares in ascending diagonal range
+    }
+    return acc
+  }, {'horizontals': [], 'verticals': [], 'ascDiagonal': [], 'descDiagonal': []})
+
+
+  let winner = null
+
+  // TODO: combine to single reduce?
+  // check for horizontal win
+  winner = boardMap['horizontals'].reduce((acc, row, idx) => {
+    if (row[0] && row.every((val) => val === row[0])) { acc = row[0] }
+    return acc
+  }, winner)
+
+  // check for vertical win
+  winner = boardMap['verticals'].reduce((acc, col, idx) => {
+    if (col[0] && col.every((val) => val === col[0])) { acc = col[0] }
+    return acc
+  }, winner)
+
+  // check for diagonal win from bottom left to top right
+  const firstAsc = boardMap['ascDiagonal'][0]
+  if (firstAsc && boardMap['ascDiagonal'].every((val) => val === firstAsc)) {
+    winner = firstAsc
   }
-  return null;
+
+  // check for diagonal win from top left to bottom right
+  const firstDesc = boardMap['descDiagonal'][0]
+  if (firstDesc && boardMap['descDiagonal'].every((val)=> val === firstDesc)) {
+    winner = firstDesc
+  }
+
+  if (!winner && !squares.some((square)=>{ return square === null})) { // ensure no squares are null
+    return 'Draw' // Return draw if all squares full
+  }
+  return winner;
 }
 
 // ==================================================
