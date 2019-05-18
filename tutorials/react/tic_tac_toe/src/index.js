@@ -5,7 +5,10 @@ import './index.css';
 const BOARDSIZE = 3
 
 const DEFAULTSTATE = {
-  squares: Array(BOARDSIZE * BOARDSIZE).fill(null),
+  history: [{
+    squares: Array(BOARDSIZE * BOARDSIZE).fill(null),
+  }],
+  stepNumber: 0,
   xIsNext: true,
 };
 
@@ -19,29 +22,9 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = DEFAULTSTATE
-  }
-
-  boardReset() {
-    this.setState(DEFAULTSTATE)
-  }
-
-  handleClick(i){
-    const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]) { // if winner or something already in a square do nothing
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-      squares: squares,
-      xIsNext: !this.state.xIsNext,
-    });
-  }
 
   renderSquare(i) {
-    return <Square value={this.state.squares[i]} onClick={()=> this.handleClick(i)}/>
+    return <Square key={i} value={this.props.squares[i]} onClick={()=> this.props.onClick(i)}/>
   }
 
   renderBoard() {
@@ -53,44 +36,78 @@ class Board extends React.Component {
         const squareIdx = x + (BOARDSIZE*i) // get 'total' iteration count
         squares.push(this.renderSquare(squareIdx)) // add square to squares array
       }
-      board.push(React.createElement('div', {className: 'board-row'}, squares))
+      board.push(React.createElement('div', {className: 'board-row', key: 'board-row'+ i}, squares))
     }
     return board
   }
 
   render () {
-    // modified from tutorial to be more DRY
-    const winner = calculateWinner(this.state.squares);
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
     return (
-      React.createElement('div', {},
-        React.createElement('div', {className: 'status'},
-          status,
-          this.renderBoard(),
-          React.createElement('button', {onClick: ()=> this.boardReset()}, 'Reset'),
-        )
-      )
+      React.createElement('div', {}, this.renderBoard())
     );
   }
 }
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = DEFAULTSTATE
+  }
+
+  handleClick(i){
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    if (calculateWinner(squares) || squares[i]) { // if winner or something already in a square do nothing
+      return;
+    }
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      history: history.concat([{
+        squares: squares,
+      }]),
+      stepNumber: history.length,
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
+    });
+  }
+
+
   render () {
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const winner = calculateWinner(current.squares.slice());
+    const status = winner ? 'Winner: ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+
+    const moves = history.map((step, move) => {
+      const descrip = move ?
+        'Go to move #' + move :
+        'Go to game start'
+      return (
+        React.createElement('li', {key: move},
+          React.createElement('button', {onClick: ()=> this.jumpTo(move)}, descrip)
+        )
+      )
+    });
+
     return (
       React.createElement('div', {className: 'game'},
         React.createElement('div', {className: 'game-board'},
-          <Board />
+          <Board
+            squares={current.squares}
+            onClick={(i)=> this.handleClick(i)}
+          />
         ),
         React.createElement('div', {className: 'game-info'},
-          React.createElement('div', {}), // TODO
-          React.createElement('ol', {}) // TODO
+          React.createElement('div', {}, status),
+          React.createElement('ol', {}, moves)
         )
-
       )
     );
   }
@@ -126,15 +143,15 @@ function calculateWinner(squares) {
 
   let winner = null
 
-  for (let key in boardMap) {
-    if(key === 'horizontals' || key === 'verticals') {
-      winner = boardMap[key].reduce((acc, group, idx) => {
-        if (group[0] && group.every((val) => val === group[0])) { acc = group[0] }
-        return acc
+  for (let key in boardMap) { // loop keys in boardMap
+    if(key === 'horizontals' || key === 'verticals') { // if horiz or vert
+      winner = boardMap[key].reduce((acc, group, idx) => { // need to check each row or column
+        if (group[0] && group.every((val) => val === group[0])) { acc = group[0] } // if all values are the same set winner
+        return acc // return accumulator as winner
       }, winner)
-    } else {
+    } else { // if diagonal we are dealing with a flat array
       const firstDiag = boardMap[key][0]
-      if (firstDiag && boardMap[key].every((val) => val === firstDiag)) { winner = firstDiag}
+      if (firstDiag && boardMap[key].every((val) => val === firstDiag)) { winner = firstDiag} // if all values are the same set winner
     }
   }
 
