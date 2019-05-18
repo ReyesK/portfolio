@@ -97,7 +97,7 @@ class Game extends React.Component {
 }
 
 function calculateWinner(squares) {
-  
+
   const boardMap = squares.reduce((acc, square, idx) => {
 
     const rowIdx = Math.floor(idx/BOARDSIZE) // determine row index
@@ -126,29 +126,16 @@ function calculateWinner(squares) {
 
   let winner = null
 
-  // TODO: combine to single reduce?
-  // check for horizontal win
-  winner = boardMap['horizontals'].reduce((acc, row, idx) => {
-    if (row[0] && row.every((val) => val === row[0])) { acc = row[0] }
-    return acc
-  }, winner)
-
-  // check for vertical win
-  winner = boardMap['verticals'].reduce((acc, col, idx) => {
-    if (col[0] && col.every((val) => val === col[0])) { acc = col[0] }
-    return acc
-  }, winner)
-
-  // check for diagonal win from bottom left to top right
-  const firstAsc = boardMap['ascDiagonal'][0]
-  if (firstAsc && boardMap['ascDiagonal'].every((val) => val === firstAsc)) {
-    winner = firstAsc
-  }
-
-  // check for diagonal win from top left to bottom right
-  const firstDesc = boardMap['descDiagonal'][0]
-  if (firstDesc && boardMap['descDiagonal'].every((val)=> val === firstDesc)) {
-    winner = firstDesc
+  for (let key in boardMap) {
+    if(key === 'horizontals' || key === 'verticals') {
+      winner = boardMap[key].reduce((acc, group, idx) => {
+        if (group[0] && group.every((val) => val === group[0])) { acc = group[0] }
+        return acc
+      }, winner)
+    } else {
+      const firstDiag = boardMap[key][0]
+      if (firstDiag && boardMap[key].every((val) => val === firstDiag)) { winner = firstDiag}
+    }
   }
 
   if (!winner && !squares.some((square)=>{ return square === null})) { // ensure no squares are null
