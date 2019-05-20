@@ -11,6 +11,7 @@ const DEFAULTSTATE = {
   }],
   stepNumber: 0,
   xIsNext: true,
+  sortMovesAscending: true,
 };
 
 
@@ -85,6 +86,11 @@ class Game extends React.Component {
     });
   }
 
+  changeMoveListSort(currentSort) {
+    this.setState({
+      sortMovesAscending: !currentSort
+    });
+  }
 
   render () {
     const history = this.state.history;
@@ -92,7 +98,7 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares.slice());
     const status = winner ? 'Winner: ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
-    const moves = history.map((step, move) => {
+    let moves = history.map((step, move) => {
       let descrip = move ?
         'Go to move #' + move + ' (' + step['moveCoords']['col'] + ',' + step['moveCoords']['row'] + ')' :
         'Go to game start'
@@ -106,6 +112,8 @@ class Game extends React.Component {
       )
     });
 
+    moves = this.state.sortMovesAscending ? moves : moves.reverse(); // sort the moves in either ascending or descending order
+
     return (
       React.createElement('div', {className: 'game'},
         React.createElement('div', {className: 'game-board'},
@@ -116,7 +124,11 @@ class Game extends React.Component {
         ),
         React.createElement('div', {className: 'game-info'},
           React.createElement('div', {}, status),
-          React.createElement('ol', {}, moves)
+          React.createElement('ol', {}, moves),
+          React.createElement('input',
+            {className: 'move-sort', id: 'move-list-sort', type: 'checkbox',
+            onChange: ()=> this.changeMoveListSort(this.state.sortMovesAscending)}),
+          React.createElement('label', {for: 'move-list-sort'}, 'Sort Move List Descending') // add toggle to sort move list
         )
       )
     );
