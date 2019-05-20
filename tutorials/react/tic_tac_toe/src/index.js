@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const BOARDSIZE = 3
+const BOARDSIZE = 3; // move to board props?
 
 const DEFAULTSTATE = {
   history: [{
@@ -17,7 +17,8 @@ const DEFAULTSTATE = {
 
 function Square(props) {
   return (
-    React.createElement('button', {className: 'square', onClick: props.onClick},
+    React.createElement('button',
+      {className: 'square ' + props.isWinningSquare, onClick: props.onClick},
       props.value
     )
   );
@@ -25,8 +26,8 @@ function Square(props) {
 
 class Board extends React.Component {
 
-  renderSquare(i) {
-    return <Square key={i} value={this.props.squares[i]} onClick={()=> this.props.onClick(i)}/>
+  renderSquare(i, isWinningSquare) {
+    return <Square key={i} value={this.props.squares[i]} onClick={()=> this.props.onClick(i)} isWinningSquare={isWinningSquare}/>
   }
 
   renderBoard() {
@@ -36,7 +37,8 @@ class Board extends React.Component {
       let squares = [] // array to hold squares for each row
       for(let x = 0; x < BOARDSIZE; x++) {
         const squareIdx = x + (BOARDSIZE*i) // get 'total' iteration count
-        squares.push(this.renderSquare(squareIdx)) // add square to squares array
+        const winning = this.props.winners.includes(squareIdx) ? 'winning-square' : ''
+        squares.push(this.renderSquare(squareIdx, winning)) // add square to squares array
       }
       board.push(React.createElement('div', {className: 'board-row', key: 'board-row'+ i}, squares))
     }
@@ -95,7 +97,8 @@ class Game extends React.Component {
   render () {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares.slice());
+    const winnerData = calculateWinner(current.squares.slice());
+    const winner = winnerData ? winnerData['winner'] : null;
     const status = winner ? 'Winner: ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     let moves = history.map((step, move) => {
@@ -120,6 +123,7 @@ class Game extends React.Component {
           <Board
             squares={current.squares}
             onClick={(i)=> this.handleClick(i)}
+            winners={winnerData ? winnerData['indices'] : []}
           />
         ),
         React.createElement('div', {className: 'game-info'},
@@ -128,7 +132,7 @@ class Game extends React.Component {
           React.createElement('input',
             {className: 'move-sort', id: 'move-list-sort', type: 'checkbox',
             onChange: ()=> this.changeMoveListSort(this.state.sortMovesAscending)}),
-          React.createElement('label', {for: 'move-list-sort'}, 'Sort Move List Descending') // add toggle to sort move list
+          React.createElement('label', {htmlFor: 'move-list-sort'}, 'Sort Move List Descending') // add toggle to sort move list
         )
       )
     );
@@ -145,40 +149,47 @@ function calculateWinner(squares) {
     }
 
     const colIdx = acc['horizontals'][rowIdx].length // column index based off row
-    acc['horizontals'][rowIdx].push(square) // add square to row
+    acc['horizontals'][rowIdx].push({square: square, index: idx}) // add square to row
 
     if (!acc['verticals'][colIdx]) {
       acc['verticals'][colIdx] = [] // initialize column array if undefined
     }
-    acc['verticals'][colIdx].push(square) // add square to column
+    acc['verticals'][colIdx].push({square: square, index: idx}) // add square to column
 
     if (rowIdx === colIdx) {
-      acc['descDiagonal'].push(square) // add squares in descending diagonal range
+      acc['descDiagonal'].push({square: square, index: idx}) // add squares in descending diagonal range
     }
 
     if (colIdx === ((rowIdx - (BOARDSIZE-1)) * -1)) {
-      acc['ascDiagonal'].push(square) // add squares in ascending diagonal range
+      acc['ascDiagonal'].push({square: square, index: idx}) // add squares in ascending diagonal range
     }
     return acc
-  }, {'horizontals': [], 'verticals': [], 'ascDiagonal': [], 'descDiagonal': []})
+  }, {horizontals: [], verticals: [], ascDiagonal: [], descDiagonal: []})
 
 
   let winner = null
 
-  for (let key in boardMap) { // loop keys in boardMap
+  // get the indexes of the winning squares
+
+  for (const key in boardMap) { // loop keys in boardMap
     if(key === 'horizontals' || key === 'verticals') { // if horiz or vert
       winner = boardMap[key].reduce((acc, group, idx) => { // need to check each row or column
-        if (group[0] && group.every((val) => val === group[0])) { acc = group[0] } // if all values are the same set winner
+        const firstSquare = group[0]['square']
+        if (firstSquare && group.every((val) => val['square'] === firstSquare)) {
+           acc = {winner: firstSquare, indices: group.map((g) => g['index'])}
+        } // if all values are the same set winner
         return acc // return accumulator as winner
       }, winner)
     } else { // if diagonal we are dealing with a flat array
-      const firstDiag = boardMap[key][0]
-      if (firstDiag && boardMap[key].every((val) => val === firstDiag)) { winner = firstDiag} // if all values are the same set winner
+      const firstDiag = boardMap[key][0]['square']
+      if (firstDiag && boardMap[key].every((val) => val['square'] === firstDiag)) {
+        winner = {winner: firstDiag, indices: boardMap[key].map((g) => g['index'])} // if all values are the same set winner
+      }
     }
   }
 
   if (!winner && !squares.some((square)=>{ return square === null})) { // ensure no squares are null
-    return 'Draw' // Return draw if all squares full
+    return {winner: 'Draw', coords: []} // Return draw if all squares full
   }
   return winner;
 }
