@@ -93,9 +93,12 @@ class Game extends React.Component {
     const status = winner ? 'Winner: ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     const moves = history.map((step, move) => {
-      const descrip = move ?
+      let descrip = move ?
         'Go to move #' + move + ' (' + step['moveCoords']['col'] + ',' + step['moveCoords']['row'] + ')' :
         'Go to game start'
+      if (this.state.stepNumber === move){ // Bold the currently selected item in the move list
+        descrip = React.createElement('b', {}, descrip)
+      }
       return (
         React.createElement('li', {key: move},
           React.createElement('button', {onClick: ()=> this.jumpTo(move)}, descrip)
