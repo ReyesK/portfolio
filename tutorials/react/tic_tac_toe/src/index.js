@@ -7,6 +7,7 @@ const BOARDSIZE = 3
 const DEFAULTSTATE = {
   history: [{
     squares: Array(BOARDSIZE * BOARDSIZE).fill(null),
+    moveCoords: null,
   }],
   stepNumber: 0,
   xIsNext: true,
@@ -61,10 +62,16 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) { // if winner or something already in a square do nothing
       return;
     }
+
+    // calculate coords of picked square
+    const col = (i % BOARDSIZE) + 1; // +1 to make coords not 0 based
+    const row = Math.floor(i / BOARDSIZE) + 1;
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{
         squares: squares,
+        moveCoords: {'col': col, 'row': row},
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -87,7 +94,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const descrip = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + ' (' + step['moveCoords']['col'] + ',' + step['moveCoords']['row'] + ')' :
         'Go to game start'
       return (
         React.createElement('li', {key: move},
