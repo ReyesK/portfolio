@@ -78,6 +78,7 @@ class Game extends React.Component {
 
     return (
       React.createElement('div', {className: 'game'},
+        React.createElement('div', {}, status),
         React.createElement('div', {className: 'game-board'},
           <Board
             squares={current.squares}
@@ -87,7 +88,6 @@ class Game extends React.Component {
           />
         ),
         React.createElement('div', {className: 'game-info'},
-          React.createElement('div', {}, status),
           React.createElement('ol', {}, moves),
           React.createElement('input',
             {className: 'move-sort', id: 'move-list-sort', type: 'checkbox',
@@ -147,7 +147,7 @@ function calculateWinner(squares, boardsize) {
   }
 
   if (!winner && !squares.some((square)=>{ return square === null})) { // ensure no squares are null
-    return {winner: 'Draw', coords: []} // Return draw if all squares full
+    return {winner: 'Draw', indices: []} // Return draw if all squares full
   }
   return winner;
 }
