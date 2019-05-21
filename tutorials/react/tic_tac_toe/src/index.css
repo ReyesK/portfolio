@@ -1,10 +1,17 @@
 body {
   font: 18px "Courier New", Courier, monospace;
   margin: 20px;
+  background-color: #3c4f72;
+  color: #fff;
 }
 
 ol, ul {
-  padding-left: 30px;
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+button {
+  cursor: pointer;
 }
 
 .board-row:after {
@@ -18,22 +25,22 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: #4e668c;
+  color: white;
+  border: 2px solid #000;
   float: left;
-  font-size: 24px;
+  font-size: 64px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: 1px;
-  margin-top: 1px;
+  height: 84px;
+  margin-right: 2px;
+  margin-top: 2px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 84px;
 }
 
 .winning-square {
-  background-color: yellow;
+  background-color: #046819;
 }
 
 .square:focus {
@@ -45,10 +52,86 @@ ol, ul {
 }
 
 .game {
-  display: flex;
-  flex-direction: row;
+  width: 100%;
+  text-align: center;
+  display: block;
+  align-items: center;
+  justify-content: center;
 }
 
 .game-info {
-  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.game-board {
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.move-button {
+  color: #000;
+  padding: 5px;
+  background-color: #ccc;
+  margin-bottom: 5px;
+  width: 200px;
+  font: 14px "Courier New", Courier, monospace;
+  border-color: #000;
+}
+
+.move-button:focus {
+  outline: none;
+}
+
+/* checkbox styling */
+.sort-label {
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding-left: 35px;
+}
+
+.sort-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ccc;
+}
+
+.sort-label .checkmark:after {
+  left: 6px;
+  top: 1px;
+  width: 5px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.sort-label input:checked ~ .checkmark {
+  background-color: #4e668c;
+}
+
+.sort-label input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
 }

@@ -69,7 +69,7 @@ class Game extends React.Component {
       }
       return (
         React.createElement('li', {key: move},
-          React.createElement('button', {onClick: ()=> this.jumpTo(move)}, descrip)
+          React.createElement('button', {className: 'move-button', onClick: ()=> this.jumpTo(move)}, descrip)
         )
       )
     });
@@ -78,6 +78,7 @@ class Game extends React.Component {
 
     return (
       React.createElement('div', {className: 'game'},
+        React.createElement('h1', {}, 'Tic Tac Toe'),
         React.createElement('div', {}, status),
         React.createElement('div', {className: 'game-board'},
           <Board
@@ -88,11 +89,14 @@ class Game extends React.Component {
           />
         ),
         React.createElement('div', {className: 'game-info'},
+          React.createElement('label', {className: 'sort-label', htmlFor: 'move-list-sort'},
+            React.createElement('input',
+              {className: 'move-sort', id: 'move-list-sort', type: 'checkbox',
+              onChange: ()=> this.changeMoveListSort(this.state.sortMovesAscending)}),
+            'Sort Move List Descending',
+            React.createElement('span', {className: 'checkmark'}),
+          ), // add toggle to sort move list
           React.createElement('ol', {}, moves),
-          React.createElement('input',
-            {className: 'move-sort', id: 'move-list-sort', type: 'checkbox',
-            onChange: ()=> this.changeMoveListSort(this.state.sortMovesAscending)}),
-          React.createElement('label', {htmlFor: 'move-list-sort'}, 'Sort Move List Descending') // add toggle to sort move list
         )
       )
     );
