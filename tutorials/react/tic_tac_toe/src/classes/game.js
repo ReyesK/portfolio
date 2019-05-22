@@ -62,19 +62,13 @@ class Game extends React.Component {
     const status = winner ? 'Winner: ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     let moves = history.map((step, move) => {
-      let descrip = move ?
-        'Go to move #' + move + ' (' + step['moveCoords']['col'] + ',' + step['moveCoords']['row'] + ')' :
-        'Go to game start'
-      if (this.state.stepNumber === move){ // Bold the currently selected item in the move list
-        descrip = React.createElement('b', {}, descrip)
-      }
       return (
         <HistoryBoard
           boardsize={this.props.boardsize}
-          description={descrip}
           onClick={()=> this.jumpTo(move)}
           squares={history[move].squares}
           moveCoords={step['moveCoords']}
+          moveNumber={move}
           isCurrent={this.state.stepNumber===move}
         />
       )
@@ -103,7 +97,7 @@ class Game extends React.Component {
             'Sort Move History Descending',
             React.createElement('span', {className: 'checkmark'}),
           ), // add toggle to sort move list
-        )
+        ),
       )
     );
   }

@@ -28,11 +28,21 @@ class HistoryBoard extends React.Component {
   }
 
   render () {
-    const historyBoardClasses = this.props.isCurrent ? 'history-board current' : 'history-board'
+    const moveNum = this.props.moveNumber
+    const moveCoords = this.props.moveCoords
+
+    let historyBoardClasses = 'history-board'
+    let descrip = moveCoords ?
+      'Go to move #' + moveNum + ' (' + moveCoords['col'] + ',' + moveCoords['row'] + ')' :
+      'Go to game start'
+    if (this.props.isCurrent) {
+      historyBoardClasses += ' current'
+      descrip = React.createElement('b', {}, descrip)
+    }
     return (
       React.createElement('div', {className: historyBoardClasses},
         React.createElement('button', {onClick: ()=> this.props.onClick()},
-          React.createElement('label', {}, this.props.description),
+          React.createElement('label', {}, descrip),
           this.renderBoard(this.props.boardsize),
         )
       )
