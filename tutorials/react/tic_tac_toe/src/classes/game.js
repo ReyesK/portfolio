@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './board.js';
+import HistoryBoard from './history-board.js'
 
 
 class Game extends React.Component {
@@ -68,9 +69,14 @@ class Game extends React.Component {
         descrip = React.createElement('b', {}, descrip)
       }
       return (
-        React.createElement('li', {key: move},
-          React.createElement('button', {className: 'move-button', onClick: ()=> this.jumpTo(move)}, descrip)
-        )
+        <HistoryBoard
+          boardsize={this.props.boardsize}
+          description={descrip}
+          onClick={()=> this.jumpTo(move)}
+          squares={history[move].squares}
+          moveCoords={step['moveCoords']}
+          isCurrent={this.state.stepNumber===move}
+        />
       )
     });
 
@@ -89,14 +95,14 @@ class Game extends React.Component {
           />
         ),
         React.createElement('div', {className: 'game-info'},
+          React.createElement('div', {className: 'history-container'}, moves),
           React.createElement('label', {className: 'sort-label', htmlFor: 'move-list-sort'},
             React.createElement('input',
               {className: 'move-sort', id: 'move-list-sort', type: 'checkbox',
               onChange: ()=> this.changeMoveListSort(this.state.sortMovesAscending)}),
-            'Sort Move List Descending',
+            'Sort Move History Descending',
             React.createElement('span', {className: 'checkmark'}),
           ), // add toggle to sort move list
-          React.createElement('ol', {}, moves),
         )
       )
     );
