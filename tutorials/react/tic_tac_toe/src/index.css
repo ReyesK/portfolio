@@ -68,18 +68,44 @@ button {
   display: inline-block;
 }
 
-.move-button {
-  color: #000;
-  padding: 5px;
-  background-color: #ccc;
-  margin-bottom: 5px;
-  width: 200px;
-  font: 14px "Courier New", Courier, monospace;
-  border-color: #000;
+.history-container {
+  margin-top: 50px;
+  margin-bottom: 30px;
 }
 
-.move-button:focus {
+.history-board .square {
+  height: 34px;
+  width: 34px;
+  font-size: 24px;
+  line-height: 34px;
+}
+
+.history-board {
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.history-board.current {
+  border-bottom: 1px solid;
+  border-color: #dd6c25;
+}
+
+.history-board:not(:last-child) {
+  margin-right: 20px;
+}
+
+.history-board button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.history-board button:focus {
   outline: none;
+}
+
+.history-last-move-square {
+  background-color: #dd6c25;
 }
 
 /* checkbox styling */
