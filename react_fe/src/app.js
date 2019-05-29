@@ -1,22 +1,25 @@
 import React from 'react';
+import GoogleLogin from 'react-google-login';
+import Cookies from 'universal-cookie';
+
 import './app.css';
 
-import GoogleLogin from 'react-google-login';
+const cookies = new Cookies();
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: null
+      jwt: cookies.get('jwt'),
+      currentUser: cookies.get('currentUser') // TODO get currentuser data from service
     }
   }
 
   googleSuccess = (response) => {
     const currentUser = googleDataFromResponse(response);
-    this.setState({
-      currentUser: currentUser
-    })
+    cookies.set('jwt', currentUser.jwt)
+    cookies.set('currentUser', currentUser)
   };
 
   googleFailure = (response) => {
@@ -26,7 +29,7 @@ class App extends React.Component {
 
   renderLogin() {
     let login = null;
-    if (this.state.currentUser === null) {
+    if (this.state.jwt === undefined) {
       login = <GoogleLogin
         clientId={this.props.clientId}
         buttonText="Login with Google"
@@ -72,6 +75,7 @@ class App extends React.Component {
 }
 
 function googleDataFromResponse(response) {
+  // TODO validate JWT
   const profile = response.profileObj
   return {
     accessToken: response.accessToken,
