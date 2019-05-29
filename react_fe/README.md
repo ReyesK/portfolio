@@ -1,3 +1,25 @@
+# running in development
+
+- Create a google oauth clientId and secret if you don't already have one.
+- if you need to test locally, create a hosts entry that points to localhost. you can use the domain for all the domain fields google asks for.
+```
+sudo vi /etc/hosts
+
+# entry in hosts file
+
+127.0.0.1       dev.reykes.com
+```
+- remember to include the port number 3000 on the authorized urls
+- create a .env file in the root of the application directory. add it to the gitignore
+- add your clientID to the .env file
+```
+REACT_APP_GOOGLE_API_KEY=your_key_here
+
+```
+
+
+#### Default Readme stuff here
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
