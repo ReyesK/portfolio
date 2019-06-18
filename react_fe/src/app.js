@@ -18,13 +18,27 @@ class App extends React.Component {
 
   googleSuccess = (response) => {
     const currentUser = googleDataFromResponse(response);
-    cookies.set('jwt', currentUser.jwt)
+    this.validateJWT(response.tokenId);
     cookies.set('currentUser', currentUser)
+    this.setState({currentUser: currentUser})
   };
 
   googleFailure = (response) => {
     console.warn('check /etc/hosts and url in browser')
     console.error(response.error);
+  }
+
+  validateJWT(jwt) {
+    // TODO call backend validation
+    fetch(this.props.backendURL + 'session', {
+        mode: 'cors'
+    })
+      .then(res => res.text())
+      .then(res => {
+        cookies.set('jwt', res);
+        this.setState({jwt: res});
+      }
+      );
   }
 
   renderLogin() {
@@ -75,7 +89,6 @@ class App extends React.Component {
 }
 
 function googleDataFromResponse(response) {
-  // TODO validate JWT
   const profile = response.profileObj
   return {
     accessToken: response.accessToken,

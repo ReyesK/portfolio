@@ -1,5 +1,5 @@
 # running in development
-
+- runs on port 3000 by default
 - Create a google oauth clientId and secret if you don't already have one.
 - if you need to test locally, create a hosts entry that points to localhost. you can use the domain for all the domain fields google asks for.
 ```
@@ -12,13 +12,14 @@ sudo vi /etc/hosts
 - remember to include the port number 3000 on the authorized urls
 - create a .env file in the root of the application directory. add it to the gitignore
 - add your clientID to the .env file
+- set backend url to wherever [node_backend](https://github.com/ReyesK/portfolio/tree/master/node_backend) is running (note the trailing slash)
 ```
 REACT_APP_GOOGLE_API_KEY=your_key_here
-
+REACT_APP_BACKEND_BASEURL=http://dev.reykes.com:9000/
 ```
 
 
-#### Default Readme stuff here
+# Default Readme stuff here
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
