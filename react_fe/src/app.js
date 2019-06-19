@@ -30,7 +30,7 @@ class App extends React.Component {
 
   validateJWT(jwt) {
     // TODO call backend validation
-    fetch(this.props.backendURL + 'session', {
+    fetch(this.props.backendURL + 'session/verify?jwt=' + jwt, {
         mode: 'cors'
     })
       .then(res => res.text())
