@@ -6,12 +6,17 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "atob": "^2.1.2",
+    "clean-css": "^4.2.1",
+    "constantinople": "^3.1.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.0.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1",
+    "pug": "^2.0.4",
+    "rsa-pem-from-mod-exp": "^0.8.4"
   }
 }
