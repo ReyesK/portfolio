@@ -6,13 +6,13 @@ var atob = require('atob');
 var getPem = require('rsa-pem-from-mod-exp');
 
 
-router.get('/verify', function(req, res, next) {
+router.get('/verify', function(req, res, next) { // TODO rename route to user or something?
   // TODO refactor jwt check to somewhere else
   const jwt = req.query.jwt;
   const parts = jwt.split('.');
   const kid = JSON.parse(atob(parts[0])).kid; // get kid from jwt header
   if (kid) {
-    https.get('https://www.googleapis.com/oauth2/v3/certs', (googleRes) => { // if supporting multiple token providers this will need to change.
+    https.get('https://www.googleapis.com/oauth2/v3/certs', (googleRes) => { // if supporting multiple token providers this hardcoded url will need to change.
       let rawData = '';
       googleRes.on('data', (chunk) => {rawData += chunk;});
       googleRes.on('end', ()=> {
@@ -29,31 +29,40 @@ router.get('/verify', function(req, res, next) {
             const pubKey = getPem(keyUsed.n, keyUsed.e);
             jwtLib.verify(jwt, pubKey, function(err, decoded) {
               if (decoded === undefined) {
-                //error
-                console.log('error');
-                console.log(err);
-                res.send(err);
+                res.status(401)
+                   .send({message: err.name + ': ' + err.message});
               } else {
-                console.log('valid jwt');
-                console.log(decoded);
-                res.send('API is working properly');
+                res.send({ // return jwt and user data to requester if valid
+                  jwt: jwt,
+                  user: {
+                    email: decoded.email,
+                    name: decoded.name,
+                    givenName: decoded.given_name,
+                    familyName: decoded.family_name,
+                    locale: decoded.locale,
+                    googleId: decoded.sub,
+                    picture: decoded.picture
+                  }
+                });
               }
             });
 
-          } else { // TODO send back errors as an object?
-            res.send('error key not found.'); // check google url and kid against keys listed at google url
+          } else {
+            res.status(401)
+               .send({message: 'JWK not found for ' + kid}); // check google url and kid against keys listed at google url
           }
         } catch(e) {
-          console.error(e.message);
-          res.send(e.message);
+          res.status(500)
+             .send({message: e.message});
         }
       });
     }).on('error', (e) => {
-      console.error(e.message);
-      res.send(e.message);
+      res.status(500)
+         .send({message: e.message});
     });
   } else {
-    res.send('Could not find kid');
+    res.status(401)
+       .send({message: 'Could not find kid'});
   }
 });
 
