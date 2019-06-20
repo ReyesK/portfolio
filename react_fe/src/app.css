@@ -1,0 +1,49 @@
+body {
+  font: 18px "Courier New", Courier, monospace;
+  background-color: #424242;
+  color: white;
+}
+
+.error-banner {
+  font-size: 20px;
+  opacity: 0.7;
+  background-color: red;
+  text-align: center;
+  border: 3px solid red;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.login-header {
+  text-align: center;
+}
+
+.login-buttons {
+  width: 175px;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.user-container {
+  width: 500px;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.user-heading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-heading > img {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+
+.user-heading > h2 {
+  margin: 0;
+  display: inline-block;
+}
