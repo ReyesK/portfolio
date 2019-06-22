@@ -2,7 +2,9 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import Cookies from 'universal-cookie';
 
-import './app.css';
+import ErrorBanner from '../components/errorBanner.js'
+
+import '../styles/app.css';
 
 const cookies = new Cookies();
 
@@ -15,10 +17,6 @@ class App extends React.Component {
       currentUser: cookies.get('currentUser'),
       error: null
     }
-  }
-
-  componentDidUpdate() {
-    setTimeout(() => this.setState({error: null}), 5000); // make error banner disappear after some time
   }
 
   googleSuccess = (response) => {
@@ -92,20 +90,11 @@ class App extends React.Component {
     return info;
   }
 
-  renderError() {
-    let error = null;
-    if (this.state.error && this.state.error.trim() !== '') {
-      error = <div className='error-banner'>
-          {this.state.error}
-      </div>
-    }
-    return error;
-  }
-
   render() {
     return (
+      // TODO refactor renderLogin and renderUserInfo to separate components
       <div className='app-container'>
-        {this.renderError()}
+        <ErrorBanner errorMessage={this.state.error} />
         {this.renderLogin()}
         {this.renderUserInfo()}
       </div>
