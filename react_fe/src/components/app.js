@@ -1,9 +1,9 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import Cookies from 'universal-cookie';
 
-import ErrorBanner from '../components/errorBanner.js';
-import Login from '../components/login.js';
-import UserInfo from '../components/userInfo.js';
+import BaseLayout from '../components/baseLayout.js';
 
 import '../styles/app.css';
 
@@ -40,12 +40,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className='app-container'>
-        <ErrorBanner errorMessage={this.state.error} />
-        <Login clientId={this.props.clientId} jwt={this.state.jwt} validateJWT={(jwt) => this.validateJWT(jwt)} />
-        <UserInfo user={this.state.currentUser} />
-      </div>
-    );
+      <Router>
+        <BaseLayout error={this.state.error} />
+      </Router>
+    )
+    // return (
+    //   <div className='app-container'>
+    //     <ErrorBanner errorMessage={this.state.error} />
+    //     <Login clientId={this.props.clientId} jwt={this.state.jwt} validateJWT={(jwt) => this.validateJWT(jwt)} />
+    //     <UserInfo user={this.state.currentUser} />
+    //   </div>
+    // );
   }
 }
 
