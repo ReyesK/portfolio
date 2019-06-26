@@ -13,8 +13,16 @@ class BaseLayout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null
+      error: null,
+      serviceReplied: false,
+      authData: {valid: false, user: null}
     };
+  }
+
+  componentDidMount() {
+    AuthService.userFromJWTCookie().then((response) =>
+      this.setState({authData: response, serviceReplied: true})
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -24,6 +32,11 @@ class BaseLayout extends React.Component {
   }
 
   render () {
+    const protectedProps = {
+      serviceReplied: this.state.serviceReplied,
+      authenticated: this.state.authData.valid,
+      user: this.state.authData.user
+    }
     return (
       <div>
         <header>
@@ -31,7 +44,8 @@ class BaseLayout extends React.Component {
         </header>
 
         <div className='app-container'>
-          <ProtectedRoute path='/' exact component={UserInfo} />
+          <ProtectedRoute path='/' exact component={UserInfo} {...protectedProps} />
+          <ProtectedRoute path='/dashboard' component={UserInfo} {...protectedProps} />
           <Route path='/login' component={Login} />
         </div>
       </div>

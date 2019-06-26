@@ -25,6 +25,7 @@ function userFromJWT(jwt) {
         }
       })
       .catch(err => {
+        cookies.remove('jwt');
         return {valid: false, error: err.message};
       });
   } else {
