@@ -1,22 +1,11 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
+import AuthService from '../services/authService.js';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      jwt: this.props.jwt
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if(this.props.jwt !== prevProps.jwt) {
-      this.setState({jwt: this.props.jwt})
-    }
-  }
-
+  // TODO redirect to / after successful login
   googleSuccess = (response) => {
-    this.props.validateJWT(response.tokenId);
+    AuthService.validateJWT(response.tokenId);
   };
 
   googleFailure = (response) => {
@@ -25,24 +14,20 @@ class Login extends React.Component {
   }
 
   render() {
-    if (this.state.jwt === undefined) {
-      return(
-        <div className='login-container'>
-          <h2 className='login-header'>Welcome, Login with google to continue.</h2>
-          <div className='login-buttons'>
-            <GoogleLogin
-              clientId={this.props.clientId}
-              buttonText="Login with Google"
-              onSuccess={this.googleSuccess}
-              onFailure={this.googleFailure}
-              cookiePolicy={'single_host_origin'}
-            />
-          </div>
+    return(
+      <div className='login-container'>
+        <h2 className='login-header'>Welcome, Login with google to continue.</h2>
+        <div className='login-buttons'>
+          <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_API_KEY}
+            buttonText="Login with Google"
+            onSuccess={this.googleSuccess}
+            onFailure={this.googleFailure}
+            cookiePolicy={'single_host_origin'}
+          />
         </div>
-      )
-    } else {
-      return null;
-    }
+      </div>
+    );
   }
 
 }

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import ProtectedRoute from '../components/protectedRoute.js';
+import AuthService from '../services/authService.js';
 
 import ErrorBanner from '../components/errorBanner.js';
 import UserInfo from '../components/userInfo.js';
@@ -7,7 +9,7 @@ import Login from '../components/login.js';
 
 
 class BaseLayout extends React.Component {
-
+  // TODO check errors, probably needs refactoring
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +31,7 @@ class BaseLayout extends React.Component {
         </header>
 
         <div className='app-container'>
-          <Route path='/' exact component={UserInfo} />
+          <ProtectedRoute path='/' exact component={UserInfo} />
           <Route path='/login' component={Login} />
         </div>
       </div>
