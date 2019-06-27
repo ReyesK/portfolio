@@ -8,17 +8,10 @@ import '../styles/app.css';
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null
-    }
-  }
-
   render() {
     return (
       <Router>
-        <BaseLayout error={this.state.error} />
+        <BaseLayout />
       </Router>
     );
   }

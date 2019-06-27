@@ -12,9 +12,7 @@ class Login extends React.Component {
 
   googleSuccess = (response) => {
     AuthService.validateJWT(response.tokenId).then((authResp) => {
-      if(authResp.valid) {
-        this.props.callback(authResp);
-      }
+      this.props.callback(authResp);
     });
   };
 

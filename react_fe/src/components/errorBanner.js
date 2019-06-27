@@ -11,8 +11,10 @@ class ErrorBanner extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.errorMessage !== prevProps.errorMessage) {
       this.setState({errorMessage: this.props.errorMessage})
+      if(this.props.errorMessage) {
+        setTimeout(() => this.props.clearError(), 5000); // make error banner disappear after some time
+      }
     }
-    setTimeout(() => this.setState({errorMessage: null}), 5000); // make error banner disappear after some time
   }
 
   render(){

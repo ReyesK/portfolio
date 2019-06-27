@@ -9,7 +9,7 @@ import Login from '../components/login';
 
 
 class BaseLayout extends React.Component {
-  // TODO check errors, probably needs refactoring
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,18 +21,17 @@ class BaseLayout extends React.Component {
 
   componentDidMount() {
     AuthService.userFromJWTCookie().then((response) =>
-      this.setState({authData: response, serviceReplied: true})
+      this.setState({serviceReplied: true, authData: response, error: response.error})
     );
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.error !== prevProps.error) {
-      this.setState({error: this.props.error});
-    }
+  loginCallback(authResp) {
+    const {error, ...response} = authResp;
+    this.setState({serviceReplied: true, authData: response, error: error});
   }
 
-  loginCallback(authResp) {
-    this.setState({serviceReplied: true, authData: authResp});
+  clearError() {
+    this.setState({error: null});
   }
 
   render () {
@@ -48,7 +47,7 @@ class BaseLayout extends React.Component {
     return (
       <div>
         <header>
-            <ErrorBanner errorMessage={this.state.error} />
+            <ErrorBanner errorMessage={this.state.error} clearError={() => this.clearError()} />
         </header>
 
         <div className='app-container'>
