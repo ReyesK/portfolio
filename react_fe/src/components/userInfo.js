@@ -17,7 +17,6 @@ class UserInfo extends React.Component {
 
   render() {
     if (this.state.user) {
-      console.log('we got the user');
       const user = this.state.user;
       let userInfo = []
       for(let k in user) {
@@ -39,7 +38,6 @@ class UserInfo extends React.Component {
 
       return info;
     } else {
-      console.log('no user here d0g');
       return null;
     }
   }

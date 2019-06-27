@@ -1,11 +1,11 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import ProtectedRoute from '../components/protectedRoute.js';
-import AuthService from '../services/authService.js';
+import { Route, Redirect } from 'react-router-dom';
+import ProtectedRoute from '../components/protectedRoute';
+import AuthService from '../services/authService';
 
-import ErrorBanner from '../components/errorBanner.js';
-import UserInfo from '../components/userInfo.js';
-import Login from '../components/login.js';
+import ErrorBanner from '../components/errorBanner';
+import UserInfo from '../components/userInfo';
+import Login from '../components/login';
 
 
 class BaseLayout extends React.Component {
@@ -31,12 +31,20 @@ class BaseLayout extends React.Component {
     }
   }
 
+  loginCallback(authResp) {
+    this.setState({serviceReplied: true, authData: authResp});
+  }
+
   render () {
     const protectedProps = {
       serviceReplied: this.state.serviceReplied,
       authenticated: this.state.authData.valid,
       user: this.state.authData.user
     }
+    if (!this.state.serviceReplied) {
+      return null;
+    }
+
     return (
       <div>
         <header>
@@ -44,9 +52,14 @@ class BaseLayout extends React.Component {
         </header>
 
         <div className='app-container'>
+
           <ProtectedRoute path='/' exact component={UserInfo} {...protectedProps} />
-          <ProtectedRoute path='/dashboard' component={UserInfo} {...protectedProps} />
-          <Route path='/login' component={Login} />
+
+          <Route path='/login' render={(props) =>
+            this.state.authData.user ?
+              <Redirect to='/' /> :
+              <Login {...props} callback={(data) => this.loginCallback(data)} />}/>
+
         </div>
       </div>
     );

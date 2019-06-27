@@ -1,11 +1,21 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
-import AuthService from '../services/authService.js';
+import AuthService from '../services/authService';
 
 class Login extends React.Component {
-  // TODO redirect to / after successful login
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirectToReferrer: false
+    };
+  }
+
   googleSuccess = (response) => {
-    AuthService.validateJWT(response.tokenId);
+    AuthService.validateJWT(response.tokenId).then((authResp) => {
+      if(authResp.valid) {
+        this.props.callback(authResp);
+      }
+    });
   };
 
   googleFailure = (response) => {
