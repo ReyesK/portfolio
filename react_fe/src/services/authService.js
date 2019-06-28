@@ -8,6 +8,9 @@ const AuthService = {
   },
   userFromJWTCookie: () => {
     return userFromJWT(cookies.get('jwt'));
+  },
+  logout: () => {
+    cookies.remove('jwt');
   }
 }
 

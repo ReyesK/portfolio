@@ -6,6 +6,7 @@ import AuthService from '../services/authService';
 import ErrorBanner from '../components/errorBanner';
 import UserInfo from '../components/userInfo';
 import Login from '../components/login';
+import Logout from '../components/logout';
 
 
 class BaseLayout extends React.Component {
@@ -30,6 +31,10 @@ class BaseLayout extends React.Component {
     this.setState({serviceReplied: true, authData: response, error: error});
   }
 
+  logoutCallback() {
+    this.setState({serviceReplied: true, authData: {user: null}})
+  }
+
   clearError() {
     this.setState({error: null});
   }
@@ -51,7 +56,7 @@ class BaseLayout extends React.Component {
         </header>
 
         <div className='app-container'>
-
+          <Logout user={this.state.authData.user} callback={() => this.logoutCallback()} />
           <ProtectedRoute path='/' exact component={UserInfo} {...protectedProps} />
 
           <Route path='/login' render={(props) =>
