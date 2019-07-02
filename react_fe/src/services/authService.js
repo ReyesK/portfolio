@@ -17,7 +17,7 @@ const AuthService = {
 function userFromJWT(jwt) {
   const backendURL = process.env.REACT_APP_BACKEND_BASEURL;
   if (jwt !== undefined) {
-    return fetch(backendURL + 'session/verify?jwt=' + jwt, {mode: 'cors'})
+    return fetch(backendURL + 'session/user?jwt=' + jwt, {mode: 'cors'})
       .then(res => Promise.all([res, res.json()]))
       .then(([res, json]) => {
         if (res.ok) {
