@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var sessionRouter = require('./routes/session');
 
 var app = express();
@@ -32,7 +31,6 @@ var allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/session', sessionRouter);
 
 // catch 404 and forward to error handler

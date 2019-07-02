@@ -19,7 +19,6 @@ class Logout extends React.Component {
   }
 
   googleLoggedOut = (response) => {
-    console.log('google logout on success');
     AuthService.logout();
     this.props.callback();
   }
