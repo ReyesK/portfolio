@@ -3,6 +3,8 @@ var https = require('https');
 var atob = require('atob');
 var getPem = require('rsa-pem-from-mod-exp');
 
+const User = require('../models/user');
+
 class SessionManager {
 
   static verifiedUser(jwt) {
@@ -31,15 +33,7 @@ class SessionManager {
                   } else {
                     resolve({ // return jwt and user data to requester if valid
                       jwt: jwt,
-                      user: { // TODO move user to a model
-                        email: decoded.email,
-                        name: decoded.name,
-                        givenName: decoded.given_name,
-                        familyName: decoded.family_name,
-                        locale: decoded.locale,
-                        googleId: decoded.sub,
-                        picture: decoded.picture
-                      }
+                      user: new User(decoded)
                     })
                   }
                 });
