@@ -1,3 +1,12 @@
+### This project requires a database
+
+##### This project uses sequelize to manage the database
+
+install sequelize cli and create the database
+```
+npm install -g sequelize-cli
+```
+
 - runs on port 4000 by default
 
 
