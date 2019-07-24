@@ -1,5 +1,7 @@
 ### Node Backend w/ Express
 
+`npm install`
+
 - runs on port 4000 by default
 - create a .env file within the project root and set the following variables
 
@@ -35,4 +37,14 @@ NODE_BACKEND_DB_HOST=127.0.0.1
 > psql
 
 > CREATE ROLE reykes LOGIN CREATEDB PASSWORD 'password';
+```
+
+Once the role is created use sequelize to create the database and set up the schema.
+
+Run the following from the project route:
+
+```
+sequelize db:create
+
+sequelize db:migrate
 ```

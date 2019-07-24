@@ -1,39 +1,16 @@
-// class User extends Sequelize.Model {}
-//
-// User.init({
-//   email: {
-//     type: Sequelize.String
-//   },
-//   familyName: {
-//     type: Sequelize.String
-//   },
-//   givenName: {
-//     type: Sequelize.String
-//   },
-//   googleId: {
-//     type: Sequelize.String
-//   },
-//   locale: {
-//     type: Sequelize.String
-//   },
-//   name: {
-//     type: Sequelize.String
-//   },
-//   picture: {
-//     type: Sequelize.String
-//   },
-// });
-
-class User {
-  constructor(params){
-    this.email = params.email,
-    this.name = params.name,
-    this.givenName = params.given_name,
-    this.familyName = params.family_name,
-    this.locale = params.locale,
-    this.googleId = params.sub,
-    this.picture = params.picture
-  }
-}
-
-module.exports = User;
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    email: DataTypes.STRING,
+    familyName: DataTypes.STRING,
+    givenName: DataTypes.STRING,
+    googleId: DataTypes.STRING,
+    locale: DataTypes.STRING,
+    name: DataTypes.STRING,
+    picture: DataTypes.STRING
+  }, {});
+  User.associate = function(models) {
+    // associations can be defined here
+  };
+  return User;
+};
