@@ -53,7 +53,6 @@ class SessionManager {
                                     }
                                   })
                                   .catch((e) => {
-                                    console.log(e.message);
                                     resolve({error: true, message: e.message, status: 500})
                                   });
                   }
