@@ -3,6 +3,8 @@ var https = require('https');
 var atob = require('atob');
 var getPem = require('rsa-pem-from-mod-exp');
 
+const sequelize = require('../models/index');
+
 class SessionManager {
 
   static verifiedUser(jwt) {
@@ -28,22 +30,34 @@ class SessionManager {
                 jwtLib.verify(jwt, pubKey, function(err, decoded) {
                   if (decoded === undefined) {
                     resolve({error: true, message: err.name + ': ' + err.message, status: 401})
-                  } else {
-                    resolve({ // return jwt and user data to requester if valid
-                      jwt: jwt,
-                      user: { // TODO move user to a model
-                        email: decoded.email,
-                        name: decoded.name,
-                        givenName: decoded.given_name,
-                        familyName: decoded.family_name,
-                        locale: decoded.locale,
-                        googleId: decoded.sub,
-                        picture: decoded.picture
-                      }
-                    })
+                  } else { // return jwt and user data to requester if valid
+                    let defaults = {
+                      email: decoded.email,
+                      familyName: decoded.family_name,
+                      givenName: decoded.given_name,
+                      locale: decoded.locale,
+                      name: decoded.name,
+                      picture: decoded.picture
+                    }
+                    // TODO move the findOrCreate Update to a helper?
+                    sequelize.User.findOrCreate({where: {googleId: decoded.sub}, defaults: defaults})
+                                  .then(([user, created]) => {
+                                    if(created) {
+                                      resolve({jwt: jwt, user: user})
+                                    } else {
+                                      // TODO check diff in defaults vs user, if no difference no need to update.
+                                      sequelize.User.update(defaults, {where: {googleId: decoded.sub}, returning: true})
+                                                     .then(([numRows, [user]]) => {
+                                                       resolve({jwt: jwt, user: user})
+                                                     })
+                                    }
+                                  })
+                                  .catch((e) => {
+                                    console.log(e.message);
+                                    resolve({error: true, message: e.message, status: 500})
+                                  });
                   }
                 });
-
               } else {
                 resolve({error: true, message: 'JWK not found for ' + kid, status: 401})
               }
