@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../styles/error.css';
+
 class ErrorBanner extends React.Component {
   constructor(props) {
     super(props);

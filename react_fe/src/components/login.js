@@ -3,6 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 
 import AuthService from '../services/authService';
 
+import '../styles/login.css';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);

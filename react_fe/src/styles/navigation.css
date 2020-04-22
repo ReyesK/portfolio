@@ -1,0 +1,26 @@
+.app-nav-bar {
+  display: flex;
+  height: inherit;
+}
+
+.app-nav-bar > span:not(.logout-container){
+  margin: auto 5px auto 5px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover, .nav-current {
+  text-decoration: underline;
+}
+
+.nav-link:active {
+  text-decoration: line-through;
+}
+
+.logout-container > button {
+  position: absolute;
+  right: 10px;
+}
