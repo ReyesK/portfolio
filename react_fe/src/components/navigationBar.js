@@ -1,8 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 import Logout from '../components/logout';
 
+import '../styles/navigation.css';
 
 class NavigationBar extends React.Component {
   constructor(props) {
@@ -20,10 +21,11 @@ class NavigationBar extends React.Component {
 
   render(){
     if (this.state.user){
+      // TODO make a custom component for NavLink that applies the repeated classes.
       return(
         <div className='app-nav-bar'>
-          <span><Link to='/'>home</Link></span>
-          <span><Link to='/profile'>profile</Link></span>
+          <span><NavLink exact className='nav-link' activeClassName='nav-current' to='/'>home</NavLink></span>
+          <span><NavLink className='nav-link' activeClassName='nav-current' to='/profile'>profile</NavLink></span>
           <Logout user={this.state.user} callback={() => this.props.logoutCallback()} />
         </div>
       )

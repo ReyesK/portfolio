@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../styles/user.css';
+
 class UserInfo extends React.Component {
 
   constructor(props) {
@@ -24,7 +26,7 @@ class UserInfo extends React.Component {
           userInfo.push(<p key={'user-' + k}>{k}: {user[k]}</p>)
         }
       }
-      
+
       const info = <div className='user-container'>
         <h5>We have fetched this data about you</h5>
         <div className='user-info'>
