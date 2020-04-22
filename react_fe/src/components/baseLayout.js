@@ -4,9 +4,10 @@ import ProtectedRoute from '../components/protectedRoute';
 import AuthService from '../services/authService';
 
 import ErrorBanner from '../components/errorBanner';
+import HomePage from '../components/homePage';
 import UserInfo from '../components/userInfo';
 import Login from '../components/login';
-import Logout from '../components/logout';
+import NavigationBar from '../components/navigationBar';
 
 
 class BaseLayout extends React.Component {
@@ -53,11 +54,12 @@ class BaseLayout extends React.Component {
       <div>
         <header>
             <ErrorBanner errorMessage={this.state.error} clearError={() => this.clearError()} />
+            <NavigationBar user={this.state.authData.user} logoutCallback={()=> this.logoutCallback()} />
         </header>
 
         <div className='app-container'>
-          <Logout user={this.state.authData.user} callback={() => this.logoutCallback()} />
-          <ProtectedRoute path='/' exact component={UserInfo} {...protectedProps} />
+          <ProtectedRoute path='/' exact component={HomePage} {...protectedProps} />
+          <ProtectedRoute path='/profile' exact component={UserInfo} {...protectedProps} />
 
           <Route path='/login' render={(props) =>
             this.state.authData.user ?
