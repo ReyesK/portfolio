@@ -20,6 +20,6 @@
     "pg-hstore": "^2.3.3",
     "pug": "^2.0.4",
     "rsa-pem-from-mod-exp": "^0.8.4",
-    "sequelize": "^5.9.2"
+    "sequelize": "^5.15.1"
   }
 }
