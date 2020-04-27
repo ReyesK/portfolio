@@ -5,8 +5,8 @@ import AuthService from '../services/authService';
 
 import ErrorBanner from '../components/errorBanner';
 import HomePage from '../components/homePage';
-import UserInfo from '../components/userInfo';
-import Login from '../components/login';
+import LoginRequiredPage from '../components/loginRequiredPage';
+import Profile from '../components/profile';
 import NavigationBar from '../components/navigationBar';
 
 
@@ -33,7 +33,7 @@ class BaseLayout extends React.Component {
   }
 
   logoutCallback() {
-    this.setState({serviceReplied: true, authData: {user: null}})
+    this.setState({serviceReplied: true, authData: {user: null}});
   }
 
   clearError() {
@@ -54,17 +54,19 @@ class BaseLayout extends React.Component {
       <div>
         <header>
             <ErrorBanner errorMessage={this.state.error} clearError={() => this.clearError()} />
-            <NavigationBar user={this.state.authData.user} logoutCallback={()=> this.logoutCallback()} />
+            <NavigationBar user={this.state.authData.user}
+                           logoutCallback={()=> this.logoutCallback()}
+                           loginCallback={(data) => this.loginCallback(data)} />
         </header>
 
         <div className='app-container'>
-          <ProtectedRoute path='/' exact component={HomePage} {...protectedProps} />
-          <ProtectedRoute path='/profile' exact component={UserInfo} {...protectedProps} />
+          <Route path='/' exact render={(props) => <HomePage {...props} user={this.state.authData.user} /> } />
+          <ProtectedRoute path='/profile' exact component={Profile} {...protectedProps} />
 
           <Route path='/login' render={(props) =>
             this.state.authData.user ?
               <Redirect to='/' /> :
-              <Login {...props} callback={(data) => this.loginCallback(data)} />}/>
+              <LoginRequiredPage {...props} />}/>
 
         </div>
       </div>

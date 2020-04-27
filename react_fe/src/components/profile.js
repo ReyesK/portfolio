@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../styles/user.css';
+import '../styles/profile.css';
 
-class UserInfo extends React.Component {
+class Profile extends React.Component {
 
   constructor(props) {
     super(props);
@@ -23,13 +23,17 @@ class UserInfo extends React.Component {
       let userInfo = []
       for(let k in user) {
         if (k !== 'picture') {
-          userInfo.push(<p key={'user-' + k}>{k}: {user[k]}</p>)
+          userInfo.push(<p key={'profile-' + k}>{k}: {user[k]}</p>)
         }
       }
 
-      const info = <div className='user-container'>
+      const info = <div className='content-container'>
+        <div className='profile-heading'>
+          <img src={user.picture} alt='user' className='profile-image' />
+          <h2>Hello, {user.givenName}</h2>
+        </div>
         <h5>We have fetched this data about you</h5>
-        <div className='user-info'>
+        <div className='profile-info'>
           {userInfo}
         </div>
       </div>
@@ -41,4 +45,4 @@ class UserInfo extends React.Component {
   }
 }
 
-export default UserInfo;
+export default Profile;

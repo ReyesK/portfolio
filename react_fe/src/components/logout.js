@@ -26,7 +26,7 @@ class Logout extends React.Component {
   render(){
     if (this.props.user){
       return(
-        <span className='logout-container'>
+        <span className='session-button-container'>
             <GoogleLogout
               clientId={process.env.REACT_APP_GOOGLE_API_KEY}
               buttonText='Logout'
