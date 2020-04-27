@@ -1,8 +1,7 @@
 import React from 'react';
-import { GoogleLogout } from 'react-google-login';
 
 import AuthService from '../services/authService';
-
+import { GoogleLogout } from 'react-google-login';
 
 class Logout extends React.Component {
   constructor(props) {

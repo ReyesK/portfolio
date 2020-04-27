@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 import ProtectedRoute from '../components/protectedRoute';
 import AuthService from '../services/authService';
 
@@ -28,12 +28,15 @@ class BaseLayout extends React.Component {
   }
 
   loginCallback(authResp) {
+    let { from } = this.props.location.state || { from: { pathname: "/" } };
     const {error, ...response} = authResp;
     this.setState({serviceReplied: true, authData: response, error: error});
+    this.props.history.push(from.pathname);
   }
 
   logoutCallback() {
     this.setState({serviceReplied: true, authData: {user: null}});
+    this.props.history.push('/');
   }
 
   clearError() {
@@ -66,12 +69,11 @@ class BaseLayout extends React.Component {
           <Route path='/login' render={(props) =>
             this.state.authData.user ?
               <Redirect to='/' /> :
-              <LoginRequiredPage {...props} />}/>
-
+              <LoginRequiredPage {...props} /> } />
         </div>
       </div>
     );
   }
 }
 
-export default BaseLayout
+export default withRouter(BaseLayout);
