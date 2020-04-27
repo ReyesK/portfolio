@@ -1,17 +1,10 @@
 import React from 'react';
-import { GoogleLogin } from 'react-google-login';
 
 import AuthService from '../services/authService';
+import { GoogleLogin } from 'react-google-login';
 
-import '../styles/login.css';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      redirectToReferrer: false
-    };
-  }
 
   googleSuccess = (response) => {
     AuthService.validateJWT(response.tokenId).then((authResp) => {
@@ -25,19 +18,16 @@ class Login extends React.Component {
   }
 
   render() {
-    return(
-      <div className='login-container'>
-        <h2 className='login-header'>Welcome, Login with google to continue.</h2>
-        <div className='login-buttons'>
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_API_KEY}
-            buttonText="Login with Google"
-            onSuccess={this.googleSuccess}
-            onFailure={this.googleFailure}
-            cookiePolicy={'single_host_origin'}
-          />
-        </div>
-      </div>
+    return (
+      <span className='session-button-container'>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_API_KEY}
+          buttonText="Login with Google"
+          onSuccess={this.googleSuccess}
+          onFailure={this.googleFailure}
+          cookiePolicy={'single_host_origin'}
+        />
+      </span>
     );
   }
 

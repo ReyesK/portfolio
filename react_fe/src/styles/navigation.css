@@ -1,9 +1,10 @@
 .app-nav-bar {
+  padding: 10px;
   display: flex;
-  height: inherit;
+  height: 45px;
 }
 
-.app-nav-bar > span:not(.logout-container){
+.app-nav-bar > span:not(.session-button-container){
   margin: auto 5px auto 5px;
 }
 
@@ -20,7 +21,7 @@
   text-decoration: line-through;
 }
 
-.logout-container > button {
+.session-button-container > button {
   position: absolute;
   right: 10px;
 }

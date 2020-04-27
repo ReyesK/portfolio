@@ -16,23 +16,27 @@ class HomePage extends React.Component {
   }
 
   render() {
-    if (this.state.user) {
-      const user = this.state.user;
-      return (
-        <div className='user-container'>
-          <div className='user-heading'>
-            <img src={user.picture} alt='user' className='user-image' />
-            <h2>Hello, {user.givenName}</h2>
-          </div>
-          <div>
-            <h5>Welcome to my react frontend, node express backend project!</h5>
-          </div>
+    let user = this.state.user;
+
+    let view =
+      <div className='content-container'>
+        <div>
+          <h4>{this.welcomeHeader(user)}</h4>
         </div>
-      );
+      </div>
+
+    return view;
+  }
+
+  // view helpers
+  welcomeHeader(user) {
+    if(user){
+      return `Welcome ${user.givenName}!`;
     } else {
-      return null;
+      return 'Welcome!';
     }
   }
+
 }
 
 export default HomePage;

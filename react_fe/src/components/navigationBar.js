@@ -1,7 +1,8 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
 
 import Logout from '../components/logout';
+import Login from '../components/login';
+import NavBarLink from '../components/navBarLink';
 
 import '../styles/navigation.css';
 
@@ -20,18 +21,27 @@ class NavigationBar extends React.Component {
   }
 
   render(){
-    if (this.state.user){
-      // TODO make a custom component for NavLink that applies the repeated classes.
-      return(
-        <div className='app-nav-bar'>
-          <span><NavLink exact className='nav-link' activeClassName='nav-current' to='/'>home</NavLink></span>
-          <span><NavLink className='nav-link' activeClassName='nav-current' to='/profile'>profile</NavLink></span>
-          <Logout user={this.state.user} callback={() => this.props.logoutCallback()} />
-        </div>
-      )
+
+    let user = this.state.user;
+    var sessionButton = null;
+    var loggedInOnlyLinks = null;
+    if (user) {
+      loggedInOnlyLinks = <>
+          <NavBarLink to='/profile'>profile</NavBarLink>
+        </>;
+      sessionButton = <Logout user={user} callback={() => this.props.logoutCallback()} />;
     } else {
-      return null;
+      sessionButton = <Login callback={(data) => this.props.loginCallback(data)} />;
     }
+
+    let navBar =
+      <div className='app-nav-bar'>
+        <NavBarLink to='/'>home</NavBarLink>
+        {loggedInOnlyLinks}
+        {sessionButton}
+      </div>
+
+    return navBar;
   }
 }
 
