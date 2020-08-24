@@ -3,10 +3,12 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import ProtectedRoute from '../components/protectedRoute';
 import AuthService from '../services/authService';
 
+import HomePage from '../views/home';
+import LoginRequiredPage from '../views/loginRequired';
+import ProfilePage from '../views/profile';
+import POCPage from '../views/pocs';
+
 import ErrorBanner from '../components/errorBanner';
-import HomePage from '../components/homePage';
-import LoginRequiredPage from '../components/loginRequiredPage';
-import Profile from '../components/profile';
 import NavigationBar from '../components/navigationBar';
 
 
@@ -43,6 +45,22 @@ class BaseLayout extends React.Component {
     this.setState({error: null});
   }
 
+
+  // define protected routes here
+  protectedRoutes() {
+    return [
+      {path: '/profile', page: ProfilePage}
+    ];
+  }
+
+  // define any public routes here
+  routes() {
+    return [
+      {path: '/', page: HomePage},
+      {path: '/pocs', page: POCPage}
+    ];
+  }
+
   render () {
     const protectedProps = {
       serviceReplied: this.state.serviceReplied,
@@ -52,6 +70,16 @@ class BaseLayout extends React.Component {
     if (!this.state.serviceReplied) {
       return null;
     }
+
+
+    const protectedRoutesJSX = this.protectedRoutes().map((r) =>
+      <ProtectedRoute key={r.path} path='/profile' exact component={ProfilePage} {...protectedProps} />
+    );
+
+
+    const routesJSX = this.routes().map((r) =>
+      <Route key={r.path} path={r.path} exact render={(props) => <r.page {...props} user={this.state.authData.user} /> } />
+    );
 
     return (
       <div>
@@ -63,9 +91,9 @@ class BaseLayout extends React.Component {
         </header>
 
         <div className='app-container'>
-          <Route path='/' exact render={(props) => <HomePage {...props} user={this.state.authData.user} /> } />
-          <ProtectedRoute path='/profile' exact component={Profile} {...protectedProps} />
-
+          {routesJSX}
+          {protectedRoutesJSX}
+          
           <Route path='/login' render={(props) =>
             this.state.authData.user ?
               <Redirect to='/' /> :

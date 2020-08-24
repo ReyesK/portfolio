@@ -23,8 +23,8 @@ class NavigationBar extends React.Component {
   render(){
 
     let user = this.state.user;
-    var sessionButton = null;
-    var loggedInOnlyLinks = null;
+    let sessionButton = null;
+    let loggedInOnlyLinks = null;
     if (user) {
       loggedInOnlyLinks = <>
           <NavBarLink to='/profile'>profile</NavBarLink>
@@ -34,9 +34,16 @@ class NavigationBar extends React.Component {
       sessionButton = <Login callback={(data) => this.props.loginCallback(data)} />;
     }
 
+    const linksJSX = [
+      {to: '/', text: 'home'},
+      {to: '/pocs', text: 'POCs'}
+    ].map((link) =>
+      <NavBarLink key={link.to} to={link.to}>{link.text}</NavBarLink>
+    );
+
     let navBar =
       <div className='app-nav-bar'>
-        <NavBarLink to='/'>home</NavBarLink>
+        {linksJSX}
         {loggedInOnlyLinks}
         {sessionButton}
       </div>

@@ -22,6 +22,7 @@ class HomePage extends React.Component {
       <div className='content-container'>
         <div>
           <h4>{this.welcomeHeader(user)}</h4>
+          <p>Check out my <a href='/pocs' className='nav-link'>POCs</a></p>
         </div>
       </div>
 
