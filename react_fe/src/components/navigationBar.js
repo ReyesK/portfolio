@@ -26,19 +26,19 @@ class NavigationBar extends React.Component {
     let sessionButton = null;
     let loggedInOnlyLinks = null;
     if (user) {
-      loggedInOnlyLinks = <>
-          <NavBarLink to='/profile'>profile</NavBarLink>
-        </>;
       sessionButton = <Logout user={user} callback={() => this.props.logoutCallback()} />;
     } else {
       sessionButton = <Login callback={(data) => this.props.loginCallback(data)} />;
     }
 
-    const linksJSX = [
-      {to: '/', text: 'home'},
-      {to: '/pocs', text: 'POCs'}
-    ].map((link) =>
-      <NavBarLink key={link.to} to={link.to}>{link.text}</NavBarLink>
+    const linksJSX = [ // set navbar links here. object format {to: required(string), text: required(string), exact: optional(bool), userRequired: optional(bool)}
+      {to: '/', text: 'home', exact: true},
+      {to: '/pocs', text: 'POCs'},
+      {to: '/profile', text: 'profile', exact: true, userRequired: true}
+    ]
+    .filter((link) => !link.userRequired || (link.userRequired && user)) // remove userRequired links if there is no user.
+    .map((link) =>
+      <NavBarLink exact={link.exact} key={link.to} to={link.to}>{link.text}</NavBarLink>
     );
 
     let navBar =

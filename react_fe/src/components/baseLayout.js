@@ -7,6 +7,8 @@ import HomePage from '../views/home';
 import LoginRequiredPage from '../views/loginRequired';
 import ProfilePage from '../views/profile';
 import POCPage from '../views/pocs';
+import APIPage from '../views/pocs/api';
+import RFEPage from '../views/pocs/reactFrontend';
 
 import ErrorBanner from '../components/errorBanner';
 import NavigationBar from '../components/navigationBar';
@@ -57,7 +59,9 @@ class BaseLayout extends React.Component {
   routes() {
     return [
       {path: '/', page: HomePage},
-      {path: '/pocs', page: POCPage}
+      {path: '/pocs', page: POCPage},
+      {path: '/pocs/api', page: APIPage},
+      {path: '/pocs/react_frontend', page: RFEPage}
     ];
   }
 
@@ -93,7 +97,7 @@ class BaseLayout extends React.Component {
         <div className='app-container'>
           {routesJSX}
           {protectedRoutesJSX}
-          
+
           <Route path='/login' render={(props) =>
             this.state.authData.user ?
               <Redirect to='/' /> :
