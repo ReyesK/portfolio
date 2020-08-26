@@ -21,7 +21,7 @@ function userFromJWT(jwt) {
       .then(res => Promise.all([res, res.json()]))
       .then(([res, json]) => {
         if (res.ok) {
-          cookies.set('jwt', json.jwt); 
+          cookies.set('jwt', json.jwt, {path: '/'}); 
           return {valid: true, user: json.user, jwt: json.jwt, error: null};
         } else {
           throw new Error(json.message);

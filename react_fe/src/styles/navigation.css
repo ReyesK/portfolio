@@ -26,3 +26,19 @@
   position: absolute;
   right: 10px;
 }
+
+.sidebar-container {
+  background-color: #555555;
+  position: fixed;
+  width: 200px;
+  height: 400px;
+  overflow: scroll;
+  left: 0px;
+  top: 65px;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 5px;
+  padding-left: 10px;
+}
