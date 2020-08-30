@@ -4,7 +4,7 @@ class LoginRequiredPage extends React.Component {
 
   render() {
     let view =
-      <div className='content-container'>
+      <div className='view-no-sidebar'>
         <div>
           <h4>Login with Google to view this page.</h4>
         </div>

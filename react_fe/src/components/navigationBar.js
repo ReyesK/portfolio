@@ -4,8 +4,6 @@ import Logout from '../components/logout';
 import Login from '../components/login';
 import NavBarLink from '../components/navBarLink';
 
-import '../styles/navigation.css';
-
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +40,7 @@ class NavigationBar extends React.Component {
     );
 
     let navBar =
-      <div className='app-nav-bar'>
+      <div className='h-full w-full flex items-center space-x-3'>
         {linksJSX}
         {loggedInOnlyLinks}
         {sessionButton}

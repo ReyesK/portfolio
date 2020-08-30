@@ -1,4 +1,5 @@
 import React from 'react';
+import NavBarLink from '../components/navBarLink';
 
 class HomePage extends React.Component {
 
@@ -19,10 +20,10 @@ class HomePage extends React.Component {
     let user = this.state.user;
 
     let view =
-      <div className='content-container'>
+      <div className='view-no-sidebar text-center'>
         <div>
           <h4>{this.welcomeHeader(user)}</h4>
-          <p>Check out my <a href='/pocs' className='nav-link'>POCs</a></p>
+          <p>Check out my<NavBarLink className='ml-2' key='hp-poc-link' to='/pocs'>POCs</NavBarLink></p>
         </div>
       </div>
 

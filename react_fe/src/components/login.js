@@ -19,14 +19,16 @@ class Login extends React.Component {
 
   render() {
     return (
-      <span className='session-button-container'>
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_API_KEY}
-          buttonText="Login with Google"
-          onSuccess={this.googleSuccess}
-          onFailure={this.googleFailure}
-          cookiePolicy={'single_host_origin'}
-        />
+      <span className='absolute right-0'>
+        <span className='pr-3'>
+          <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_API_KEY}
+            buttonText="Login with Google"
+            onSuccess={this.googleSuccess}
+            onFailure={this.googleFailure}
+            cookiePolicy={'single_host_origin'}
+          />
+        </span>
       </span>
     );
   }

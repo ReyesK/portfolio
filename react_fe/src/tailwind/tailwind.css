@@ -1,0 +1,37 @@
+@tailwind base;
+
+body {
+  @apply bg-gray-2;
+  @apply text-white;
+  @apply font-body;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+header {
+  @apply bg-gray-1;
+  @apply h-16;
+  @apply pl-3;
+  @apply w-full;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@tailwind components;
+@tailwind utilities;
+
+
+.view-no-sidebar {
+  @apply w-4/5;
+  @apply mx-auto;
+  @apply mt-16;
+  @apply p-4;
+}
+
+.view-w-sidebar {
+  @apply mt-16;
+  @apply w-5/6;
+  @apply p-6;
+  @apply float-right;
+}

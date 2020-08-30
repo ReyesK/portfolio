@@ -9,14 +9,12 @@ class Sidebar extends React.Component {
       {to: '/pocs/api', text: 'API'},
       {to: '/pocs/react_frontend', text: 'React Frontend'}
     ].map((link) =>
-      <NavBarLink className='sidebar-link nav-link' key={link.to} to={link.to}>{link.text}</NavBarLink>
+      <NavBarLink className='block px-3 py-2' key={link.to} to={link.to}>{link.text}</NavBarLink>
     );
 
     let sidebar =
-      <div className='sidebar-container'>
-        <div className='app-sidebar'>
+      <div className='bg-gray-3 fixed mt-16 h-full w-1/6 overflow-scroll'>
           {linksJSX}
-        </div>
       </div>
 
     return sidebar;
