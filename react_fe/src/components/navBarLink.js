@@ -5,12 +5,18 @@ import {NavLink} from 'react-router-dom';
 class NavBarLink extends React.Component {
 
   render(){
-    let classes = typeof this.props.className === 'undefined' ? 'nav-link' : `nav-link ${this.props.className}`;
+    const {className, ...rest} = this.props
+
     return(
       <span>
-        <NavLink className={classes} activeClassName='nav-current' {...this.props} />
+        <NavLink className={this.inheritClasses(className)} activeClassName='underline' {...rest} />
       </span>
     )
+  }
+
+  inheritClasses(parentClasses) {
+    const defaultClasses = 'font-bold active:line-through hover:underline';
+    return typeof parentClasses === 'undefined' ? defaultClasses : `${defaultClasses} ${parentClasses}`;
   }
 }
 

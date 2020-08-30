@@ -1,7 +1,5 @@
 import React from 'react';
 
-import '../styles/profile.css';
-
 class Profile extends React.Component {
 
   constructor(props) {
@@ -27,14 +25,16 @@ class Profile extends React.Component {
         }
       }
 
-      const info = <div className='content-container'>
-        <div className='profile-heading'>
-          <img src={user.picture} alt='user' className='profile-image' />
-          <h2>Hello, {user.givenName}</h2>
-        </div>
-        <h5>We have fetched this data about you</h5>
-        <div className='profile-info'>
-          {userInfo}
+      const info = <div className='view-no-sidebar'>
+        <div className='mx-auto w-1/2'>
+          <div className='flex items-center mb-4'>
+            <img src={user.picture} alt='user' className='rounded-full mr-3 w-16 h-16' />
+            <h2>Hello, {user.givenName}</h2>
+          </div>
+          <h5>We have fetched this data about you</h5>
+          <div>
+            {userInfo}
+          </div>
         </div>
       </div>
 

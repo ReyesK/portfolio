@@ -32,10 +32,10 @@ class BaseLayout extends React.Component {
   }
 
   loginCallback(authResp) {
-    let { from } = this.props.location.state || { from: { pathname: "/" } };
+    let from = this.props.location.pathname || "/";
     const {error, ...response} = authResp;
     this.setState({serviceReplied: true, authData: response, error: error});
-    this.props.history.push(from.pathname);
+    this.props.history.push(from);
   }
 
   logoutCallback() {
@@ -94,7 +94,7 @@ class BaseLayout extends React.Component {
                            loginCallback={(data) => this.loginCallback(data)} />
         </header>
 
-        <div className='app-container'>
+        <div>
           {routesJSX}
           {protectedRoutesJSX}
 

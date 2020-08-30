@@ -1,7 +1,5 @@
 import React from 'react';
 
-import '../styles/error.css';
-
 class ErrorBanner extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +20,7 @@ class ErrorBanner extends React.Component {
   render(){
     if (typeof this.state.errorMessage === 'string' && this.state.errorMessage.trim() !== ''){
       return(
-        <div className='error-banner'>
+        <div className='h-16 py-4 bg-opacity-80 bg-red text-xl font-semibold text-center fixed w-full z-10'>
             {this.state.errorMessage}
         </div>
       )

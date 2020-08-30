@@ -6,13 +6,14 @@ class APIPOC extends React.Component {
 
   render() {
     let view =
-      <div className='content-container'>
-        <Sidebar />
+      <>
+      <Sidebar />
+      <div className='view-w-sidebar'>
         <div>
           <h4>Watch me consume an API!</h4>
         </div>
       </div>
-
+      </>
     return view;
   }
 

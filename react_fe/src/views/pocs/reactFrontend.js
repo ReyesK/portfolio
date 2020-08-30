@@ -2,21 +2,22 @@ import React from 'react';
 
 import Sidebar from '../../components/sidebar';
 
-class APIPOC extends React.Component {
+class ReactFrontend extends React.Component {
 
   render() {
     let view =
-      <div className='content-container'>
-        <Sidebar />
+      <>
+      <Sidebar />
+      <div className='view-w-sidebar'>
         <div>
           <h4>This site is built with a React frontend!</h4>
           <p>Running React version: {React.version}</p>
         </div>
       </div>
-
+      </>
     return view;
   }
 
 }
 
-export default APIPOC;
+export default ReactFrontend;
