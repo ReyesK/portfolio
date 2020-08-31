@@ -69,6 +69,7 @@ class Game extends React.Component {
           squares={history[move].squares}
           moveCoords={step['moveCoords']}
           moveNumber={move}
+          key={move}
           isCurrent={this.state.stepNumber===move}
         />
       )
