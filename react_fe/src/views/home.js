@@ -1,5 +1,6 @@
 import React from 'react';
-import NavBarLink from '../components/navBarLink';
+
+import ContentLink from '../components/contentLink';
 
 class HomePage extends React.Component {
 
@@ -23,7 +24,7 @@ class HomePage extends React.Component {
       <div className='view-no-sidebar text-center'>
         <div>
           <h4>{this.welcomeHeader(user)}</h4>
-          <p>Check out my<NavBarLink className='ml-2' key='hp-poc-link' to='/pocs'>POCs</NavBarLink></p>
+          <p>Check out my <ContentLink href='/pocs' text='POCs' /></p>
         </div>
       </div>
 
