@@ -3,12 +3,8 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import ProtectedRoute from '../components/protectedRoute';
 import AuthService from '../services/authService';
 
-import HomePage from '../views/home';
-import LoginRequiredPage from '../views/loginRequired';
-import ProfilePage from '../views/profile';
-import POCPage from '../views/pocs';
-import APIPage from '../views/pocs/api';
-import RFEPage from '../views/pocs/reactFrontend';
+
+import * as Views from '../views';
 
 import ErrorBanner from '../components/errorBanner';
 import NavigationBar from '../components/navigationBar';
@@ -51,17 +47,18 @@ class BaseLayout extends React.Component {
   // define protected routes here
   protectedRoutes() {
     return [
-      {path: '/profile', page: ProfilePage}
+      {path: '/profile', page: Views.Profile}
     ];
   }
 
   // define any public routes here
   routes() {
     return [
-      {path: '/', page: HomePage},
-      {path: '/pocs', page: POCPage},
-      {path: '/pocs/api', page: APIPage},
-      {path: '/pocs/react_frontend', page: RFEPage}
+      {path: '/', page: Views.Home},
+      {path: '/pocs', page: Views.POC},
+      {path: '/pocs/api', page: Views.API},
+      {path: '/pocs/react_frontend', page: Views.ReactFrontend},
+      {path: '/pocs/node_backend', page: Views.NodeBackend},
     ];
   }
 
@@ -71,15 +68,14 @@ class BaseLayout extends React.Component {
       authenticated: this.state.authData.valid,
       user: this.state.authData.user
     }
+
     if (!this.state.serviceReplied) {
       return null;
     }
 
-
     const protectedRoutesJSX = this.protectedRoutes().map((r) =>
-      <ProtectedRoute key={r.path} path='/profile' exact component={ProfilePage} {...protectedProps} />
+      <ProtectedRoute key={r.path} path={r.path} exact component={r.page} {...protectedProps} />
     );
-
 
     const routesJSX = this.routes().map((r) =>
       <Route key={r.path} path={r.path} exact render={(props) => <r.page {...props} user={this.state.authData.user} /> } />
@@ -101,7 +97,7 @@ class BaseLayout extends React.Component {
           <Route path='/login' render={(props) =>
             this.state.authData.user ?
               <Redirect to='/' /> :
-              <LoginRequiredPage {...props} /> } />
+              <Views.LoginRequired {...props} /> } />
         </div>
       </div>
     );
