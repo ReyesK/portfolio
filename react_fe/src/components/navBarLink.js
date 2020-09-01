@@ -15,7 +15,7 @@ class NavBarLink extends React.Component {
   }
 
   inheritClasses(parentClasses) {
-    const defaultClasses = 'font-bold active:line-through hover:underline';
+    const defaultClasses = 'font-bold hover:underline active:line-through';
     return typeof parentClasses === 'undefined' ? defaultClasses : `${defaultClasses} ${parentClasses}`;
   }
 }
