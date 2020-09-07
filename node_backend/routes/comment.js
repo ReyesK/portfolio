@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/session');
+const controller = require('../controllers/comment');
 
-router.get('/user', controller.user);
+router.post('/', controller.create);
 
 module.exports = router;

@@ -40,7 +40,7 @@ class NavigationBar extends React.Component {
     );
 
     let navBar =
-      <div className='h-full w-full flex items-center space-x-3'>
+      <div className='h-full w-full flex pl-3 items-center space-x-3'>
         {linksJSX}
         {loggedInOnlyLinks}
         {sessionButton}

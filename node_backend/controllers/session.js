@@ -1,14 +1,15 @@
-var sessionManager = require('../managers/session');
+const manager = require('../managers/session');
 
 exports.user = function(req, res) {
   const jwt = req.query.jwt;
-  sessionManager.verifiedUser(jwt).then((userResponse) => {
-    if (userResponse.error) {
-      res.status(userResponse.status)
-         .send({message: userResponse.message});
-    } else {
+
+  manager.verifiedUser(jwt)
+    .then(userResponse => {
       res.status(200)
          .send(userResponse);
-    }
-  });
+    })
+    .catch(error => {
+      res.status(error.status)
+         .send({message: error.message});
+    });
 }
