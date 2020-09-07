@@ -12,7 +12,7 @@ class ReactFrontend extends React.Component {
       <Sidebar />
       <div className='view-w-sidebar'>
         <div>
-          <h4>This site is built with a <ContentLink href='https://reactjs.org/' target='_blank' text='React' /> frontend!</h4>
+          <p className='text-lg font-bold'>This site is built with a <ContentLink href='https://reactjs.org/' target='_blank' text='React' /> frontend!</p>
           <p>Running React version: {React.version}</p>
           <p>Styled using <ContentLink href='https://tailwindcss.com/' target='_blank' text='tailwindcss'/> Framework</p>
           <GithubButton repo='https://github.com/ReyesK/portfolio/tree/master/react_fe'/>

@@ -10,7 +10,8 @@ class POCs extends React.Component {
       <Sidebar />
       <div className='view-w-sidebar'>
         <div>
-          <h4>Use the sidebar to explore my Proof of Concepts!</h4>
+          <p className='text-lg font-bold'>Use the sidebar to explore my Proof of Concepts!</p>
+          <p>Each page in the sidebar will include a github link for the project's source code.</p>
         </div>
       </div>
       </>
