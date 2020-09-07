@@ -7,7 +7,8 @@ class Sidebar extends React.Component {
 
     const linksJSX = [ // set navbar links here.
       {to: '/pocs/api', text: 'API'},
-      {to: '/pocs/react_frontend', text: 'React Frontend'}
+      {to: '/pocs/react_frontend', text: 'React Frontend'},
+      {to: '/pocs/node_backend', text: 'NodeJS Backend'},
     ].map((link) =>
       <NavBarLink className='block px-3 py-2' key={link.to} to={link.to}>{link.text}</NavBarLink>
     );
