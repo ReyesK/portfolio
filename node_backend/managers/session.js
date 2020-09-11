@@ -1,14 +1,21 @@
-var jwtLib = require('jsonwebtoken');
-var https = require('https');
-var atob = require('atob');
-var getPem = require('rsa-pem-from-mod-exp');
+const jwtLib = require('jsonwebtoken');
+const https = require('https');
+const atob = require('atob');
+const getPem = require('rsa-pem-from-mod-exp');
 
-const sequelize = require('../models/index');
+const db = require('../models/index');
 
 class SessionManager {
 
-  static verifiedUser(jwt) {
+  static userDataChanged(user, data) {
+    for(const k in data) {
+      if (data[k] != user[k]) return true
+    }
+    return false
+  }
 
+  static verifiedUser(jwt) {
+    if (typeof jwt === 'undefined' || !jwt) {return Promise.reject({message: 'JWT not found', status: 401})}
     const parts = jwt.split('.');
     const kid = JSON.parse(atob(parts[0])).kid; // get kid from jwt header
     return new Promise(function(resolve, reject) {
@@ -29,7 +36,7 @@ class SessionManager {
                 const pubKey = getPem(keyUsed.n, keyUsed.e);
                 jwtLib.verify(jwt, pubKey, function(err, decoded) {
                   if (decoded === undefined) {
-                    resolve({error: true, message: err.name + ': ' + err.message, status: 401})
+                    reject({message: err.name + ': ' + err.message, status: 401})
                   } else { // return jwt and user data to requester if valid
                     let defaults = {
                       email: decoded.email,
@@ -39,36 +46,35 @@ class SessionManager {
                       name: decoded.name,
                       picture: decoded.picture
                     }
-                    // TODO move the findOrCreate Update to a helper?
-                    sequelize.User.findOrCreate({where: {googleId: decoded.sub}, defaults: defaults})
+
+                    db.User.findOrCreate({where: {providerId: decoded.sub}, defaults: defaults})
                                   .then(([user, created]) => {
-                                    if(created) {
+                                    if(created || !SessionManager.userDataChanged(user, defaults)) {
                                       resolve({jwt: jwt, user: user})
-                                    } else {
-                                      // TODO check diff in defaults vs user, if no difference no need to update.
-                                      sequelize.User.update(defaults, {where: {googleId: decoded.sub}, returning: true})
-                                                     .then(([numRows, [user]]) => {
-                                                       resolve({jwt: jwt, user: user})
-                                                     })
+                                    } else { // update user if necessary
+                                      db.User.update(defaults, {where: {providerId: decoded.sub}, returning: true})
+                                             .then(([numRows, [user]]) => {
+                                               resolve({jwt: jwt, user: user})
+                                             })
                                     }
                                   })
                                   .catch((e) => {
-                                    resolve({error: true, message: e.message, status: 500})
+                                    reject({message: e.message, status: 500})
                                   });
                   }
                 });
               } else {
-                resolve({error: true, message: 'JWK not found for ' + kid, status: 401})
+                reject({message: 'JWK not found for ' + kid, status: 401})
               }
             } catch(e) {
-              resolve({error: true, message: e.message, status: 500})
+              reject({message: e.message, status: 500})
             }
           });
         }).on('error', (e) => {
-          resolve({error: true, message: e.message, status: 500})
+          reject({message: e.message, status: 500})
         });
       } else {
-          resolve({error: true, message: 'Could not find kid', status: 401})
+          reject({message: 'Could not find kid', status: 401})
       }
     });
   }

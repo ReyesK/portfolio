@@ -19,7 +19,7 @@ class Profile extends React.Component {
     if (this.state.user) {
       const user = this.state.user;
       let userInfo = []
-      for(let k in user) {
+      for(const k in user) {
         if (k !== 'picture') {
           userInfo.push(<p key={'profile-' + k}>{k}: {user[k]}</p>)
         }

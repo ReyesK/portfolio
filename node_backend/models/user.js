@@ -4,13 +4,14 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     familyName: DataTypes.STRING,
     givenName: DataTypes.STRING,
-    googleId: DataTypes.STRING,
+    providerId: DataTypes.STRING,
     locale: DataTypes.STRING,
     name: DataTypes.STRING,
     picture: DataTypes.STRING
   }, {});
   User.associate = function(models) {
     // associations can be defined here
+    // TODO add comment association.
   };
   return User;
 };

@@ -1,16 +1,14 @@
 require('dotenv').config();
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const currentUser = require('./middleware/currentUser');
 
-var indexRouter = require('./routes/index');
-var sessionRouter = require('./routes/session');
+const app = express();
 
-var app = express();
-
-// view engine setup
+// view engine setup - probably get rid of this
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -20,18 +18,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', process.env.NODE_BACKEND_ALLOWED_ORIGINS);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+const allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', process.env.NODE_BACKEND_ALLOWED_ORIGINS);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-    next();
+  next();
 }
 
 app.use(allowCrossDomain);
 
-app.use('/', indexRouter);
-app.use('/session', sessionRouter);
+
+
+app.use(currentUser);
+app.use('/', require('./routes/index'));
+app.use('/session', require('./routes/session'));
+app.use('/comments', require('./routes/comment'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
