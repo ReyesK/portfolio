@@ -1,6 +1,6 @@
 
 ---
-## Skills
+### Skills
 ---
 - Strong work ethic, always willing to learn
 - Efficient problem-solving skills
@@ -9,7 +9,7 @@
 - Some experience with: React, Objective-C, Swift, Android SDK, Kotlin, Springboot, WebRTC
 
 ---
-## Interests
+### Interests
 ---
 
 - Cyber security
@@ -19,7 +19,7 @@
 - Magic the Gathering
 
 ---
-## Previous Employment Responsibilities
+### Previous Employment Responsibilities
 ---
 - Frontend Typescript development using Vue/Nuxt with vuex and vuetify
 - Backend development using Kotlin
