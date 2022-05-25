@@ -1,6 +1,6 @@
 
 ---
-## Skills
+### Skills
 ---
 - Strong work ethic, always willing to learn
 - Efficient problem-solving skills
@@ -9,17 +9,7 @@
 - Some experience with: React, Objective-C, Swift, Android SDK, Kotlin, Springboot, WebRTC
 
 ---
-## Interests
----
-
-- Cyber security
-- Learning about Physics
-- Extreme Weather
-- Video Games
-- Magic the Gathering
-
----
-## Previous Employment Responsibilities
+### Previous Employment Responsibilities
 ---
 - Frontend Typescript development using Vue/Nuxt with vuex and vuetify
 - Backend development using Kotlin
@@ -30,3 +20,18 @@
 - Local full stack docker orchestration
 - Created a web application using Rails in the frontend and a Phoenix API backend
 - Implement new features on existing Android and iOS applications
+
+---
+### Interests
+---
+
+- Cyber security
+- Learning about Physics
+- Extreme Weather
+
+---
+### Hobbies
+---
+- Enjoying Nature (Dog Walks, Hikes, Sightseeing)
+- Video Games (Fortnite, PokemonGo, MTGArena)
+- Magic the Gathering
