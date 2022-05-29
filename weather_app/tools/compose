@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# script runs docker compose for the specified mode.
+# script will likely do more startup/teardown functions
+
+MODE=${1:-up} # mode should be either 'up' or 'down'
+
+case $MODE in 
+    up)
+        docker-compose up -d
+        ;;
+    down)
+        docker-compose down
+        ;;
+    *)
+        echo Mode ${MODE} is not supported
+        exit 1
+esac
