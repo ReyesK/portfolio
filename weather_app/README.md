@@ -10,6 +10,8 @@ There will be a frontend written in a modern style react. To display active weat
 ## Run local with docker:
 `bash tools/compose up`
 
+react frontend: localhost:3000
+
 druid dashboard: localhost:8888
 
 zookeeper admin panel: localhost:8080/commands

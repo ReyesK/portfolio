@@ -13,9 +13,12 @@ case $MODE in
         docker-compose up -d # start up druid stack
 
         # REACT FRONTEND
-        npm start & # start react frontend 
-        sleep 1 # need to sleep 1 so pid of start script is available
-        pgrep -f $START_PATH > .pid # write pid to a file in the current directory
+        npm start & # start up frontend (runs in background)
+        # wait for start script to run so we can save the PID
+        while ! pgrep -f $START_PATH > /dev/null; do
+            sleep 0.1 # delay until next check
+        done
+        pgrep -f $START_PATH > .pid # start and write pid to a file in the current directory
 
         ;;
     down)
