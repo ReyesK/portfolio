@@ -1,2 +1,3 @@
 /secrets
 /tutorials/rust/**/target
+node_modules

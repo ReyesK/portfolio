@@ -5,12 +5,27 @@
 
 MODE=${1:-up} # mode should be either 'up' or 'down'
 
+START_PATH=$(cd .. && pwd)/node_modules/react-scripts/scripts/start.js # Path to start script that `react-scripts start` runs
+
 case $MODE in 
     up)
-        docker-compose up -d
+        # DRUID STACK
+        docker-compose up -d # start up druid stack
+
+        # REACT FRONTEND
+        npm start & # start react frontend 
+        sleep 1 # need to sleep 1 so pid of start script is available
+        pgrep -f $START_PATH > .pid # write pid to a file in the current directory
+
         ;;
     down)
+        # KILL DRUID
         docker-compose down
+
+        # KILL REACT
+        kill -15 $(cat .pid)
+        rm -f .pid
+
         ;;
     *)
         echo Mode ${MODE} is not supported

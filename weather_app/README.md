@@ -10,7 +10,7 @@ There will be a frontend written in a modern style react. To display active weat
 ## Run local with docker:
 `bash tools/compose up`
 
-view druid dashboard: localhost:8888
+druid dashboard: localhost:8888
 
 zookeeper admin panel: localhost:8080/commands
 
@@ -33,3 +33,10 @@ historical          0.0.0.0:8083->8083/tcp
 coordinator         0.0.0.0:8081->8081/tcp
 
 zookeeper           2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp, 8080/tcp
+
+
+# TODO
+
+create react frontend that can pull and display data from the druid cluster.
+
+druid spec should be lazy created. can you fetch specs from druid cluster? need a way to check if spec needs to be created
