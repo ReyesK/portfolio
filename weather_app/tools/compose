@@ -17,7 +17,8 @@ case $MODE in
         # wait for start script to run so we can save the PID
         while ! pgrep -f $START_PATH 
         do
-            sleep 0.1 # delay until next check
+            # sleep 0.1 # uncomment to delay until next check
+            continue
         done
         pgrep -f $START_PATH > .reactpid # start and write pid to a file in the current directory
 
