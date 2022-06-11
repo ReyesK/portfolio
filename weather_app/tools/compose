@@ -15,7 +15,7 @@ case $MODE in
         # REACT FRONTEND
         npm start & # start up frontend (runs in background)
         # wait for start script to run so we can save the PID
-        while ! pgrep -f $START_PATH 
+        while ! pgrep -f $START_PATH > /dev/null
         do
             # sleep 0.1 # uncomment to delay until next check
             continue
