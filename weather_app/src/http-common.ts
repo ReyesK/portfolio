@@ -1,6 +1,6 @@
 import axios from "axios";
 export default axios.create({
-    baseURL: "http://localhost:8080/api", // change this
+    baseURL: "https://api.weather.gov", // change this
     headers: {
         "Content-Type": "application/json"
     }
