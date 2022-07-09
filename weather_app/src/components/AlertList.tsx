@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import WeatherService from "../services/WeatherService";
 import { AlertFilterType } from "../types/Weather";
 
@@ -6,14 +6,16 @@ const AlertList: React.FC = () => {
 
     const [alerts, setAlerts] = useState({});
 
-    const fetchData = async () => {
-        const res = await WeatherService.fetchAlerts()
-        setAlerts(res)
-    }
+    const fetchData = useCallback(
+        async () => {
+            const res = await WeatherService.fetchAlerts()
+            setAlerts(res)
+        }, []
+    );
 
     useEffect(() => {
         fetchData();
-    });
+    }, [fetchData]);
 
     return (
         <div>
