@@ -3,6 +3,8 @@
 # script runs docker compose for the specified mode.
 # script will likely do more startup/teardown functions
 
+cd $(dirname $0)
+
 MODE=${1:-up} # mode should be either 'up' or 'down'
 
 START_PATH=$(cd .. && pwd)/node_modules/react-scripts/scripts/start.js # Path to start script that `react-scripts start` runs
