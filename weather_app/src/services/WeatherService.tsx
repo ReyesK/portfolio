@@ -1,5 +1,5 @@
-import axios from "../http-common";
-import { AlertFilterType } from "../types/Weather";
+import axios from "http-common";
+import { AlertFilterType } from "types/Weather";
 
 interface FetchFilter {
     type: AlertFilterType

@@ -1,11 +1,7 @@
-import React, { ReactNode } from 'react';
-import './App.css';
+import 'App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Route, Routes } from 'react-router-dom';
-import { NavbarItem } from './types/Base';
-import AlertList from './components/AlertList';
-import ForecastList from './components/ForecastList';
-import NavigationLinks from './components/NavigationLinks';
+import NavigationLinks from 'components/NavigationLinks';
+import Router from 'router';
 
 function App() {
   return (
@@ -19,12 +15,7 @@ function App() {
         </div>
       </nav>
       <div className="container mt-3">
-        {/* TODO move routes to a router component */}
-        <Routes>
-          <Route path="/" element={<AlertList />} />
-          <Route path="/alerts" element={<AlertList />} />
-          <Route path="/forecast" element={<ForecastList />} />
-        </Routes>
+        <Router/>
       </div>
     </div>
   );
