@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import WeatherService from "../services/WeatherService";
-// import { AlertFilterType } from "../types/Weather";
+import WeatherService from "services/WeatherService";
+// import { AlertFilterType } from "types/Weather";
 
 const AlertList: React.FC = () => {
 
@@ -8,10 +8,12 @@ const AlertList: React.FC = () => {
 
     const fetchData = useCallback(
         async () => {
+            // TODO type for response 
             const res = await WeatherService.fetchAlerts()
             console.log(res)
             setAlerts(res)
-            // setAlerts((res.data as any).features)
+            // setAlerts((res.data as any)['@context']) // save context somewhere.
+            // setAlerts(res.data.features[0].properties.instruction as any)
         }, []
     );
 
