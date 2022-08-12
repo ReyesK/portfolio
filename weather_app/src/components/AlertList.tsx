@@ -9,7 +9,9 @@ const AlertList: React.FC = () => {
     const fetchData = useCallback(
         async () => {
             const res = await WeatherService.fetchAlerts()
+            console.log(res)
             setAlerts(res)
+            // setAlerts((res.data as any).features)
         }, []
     );
 
