@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import WeatherService from "../services/WeatherService";
-import { AlertFilterType } from "../types/Weather";
+// import { AlertFilterType } from "../types/Weather";
 
 const AlertList: React.FC = () => {
 

@@ -19,6 +19,7 @@ function App() {
         </div>
       </nav>
       <div className="container mt-3">
+        {/* TODO move routes to a router component */}
         <Routes>
           <Route path="/" element={<AlertList />} />
           <Route path="/alerts" element={<AlertList />} />
