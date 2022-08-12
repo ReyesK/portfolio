@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { NavbarItem } from './types/Base';
 import AlertList from './components/AlertList';
 import ForecastList from './components/ForecastList';
+import NavigationLinks from './components/NavigationLinks';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           krwx
         </a>
         <div className="navbar-nav mr-auto">
-          {navLinks()}
+          <NavigationLinks />
         </div>
       </nav>
       <div className="container mt-3">
@@ -26,31 +27,6 @@ function App() {
       </div>
     </div>
   );
-}
-
-function links(): NavbarItem[] {
-  return [
-    {
-      path: "/alerts",
-      text: "Alerts"
-    },
-    {
-      path: "/forecast",
-      text: "Forecast"
-    }
-  ]
-}
-
-function navLinks(): ReactNode {
-  const vals: ReactNode[] = []
-  links().forEach(element => {
-    vals.push(
-      <li className="nav-item">
-        <Link to={element.path} className="nav-link">{element.text}</Link>
-      </li>
-    )
-  });
-  return vals
 }
 
 export default App;
