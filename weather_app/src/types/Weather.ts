@@ -174,7 +174,7 @@ export interface NWSFeatureProperties {
     severity: NWSSeverity
     certainty: NWSCertainty
     urgency: NWSUrgency
-    event: NWSEASEvent
+    event: NWSEASEvent | NWSAdminEvent | NWSEASWeatherEvent
     sender: string // email address?
     senderName: string
     headline: string
