@@ -82,7 +82,8 @@ export type NWSAdminEvent =
     'Administrative Message' | 
     'Practice/Demo Warning' | 
     'Required Monthly Test' | 
-    'Required Weekly Test'
+    'Required Weekly Test' |
+    'Test Message'
 
 type NWSEventMap = {
     [key in NWSEASCode]: NWSEASWeatherEvent | NWSEASEvent | NWSAdminEvent
@@ -170,6 +171,7 @@ export enum NWSPropertyType {
 
 export enum NWSAlertStatus {
     Actual = 'Actual',
+    Test = 'Test'
 }
 
 export enum NWSAlertMessageType {
@@ -178,27 +180,61 @@ export enum NWSAlertMessageType {
 
 export enum NWSCategory { 
     Met = 'Met',
+    Unknown = 'Unknown'
 }
 
 export enum NWSSeverity {
     Minor = 'Minor',
+    Severe = 'Severe',
+    Unknown = 'Unknown'
 }
 
 export enum NWSCertainty {
     Observed = 'Observed',
+    Unknown = 'Unknown'
 }
 
 export enum NWSUrgency {
     Expected = 'Expected',
+    Immediate = 'Immediate',
+    Unknown = 'Unknown'
 }
 
 type NWSContext = Array<string | NWSContextData>
 
 /* INTERFACES */
+
 export interface AlertResponse {
+    data: AlertResponseData
+    status: number
+    statusText: string
+    headers: Map<string, string>
+    config: NWSResponseConfig
+    request: any
+}
+
+export interface NWSResponseConfig {
+    transitional: Map<string, boolean>
+    transformREquest: any[]
+    transformResponse: any[]
+    timeout: number
+    xsrfCookieName: string
+    xsrfHeaderName: string
+    maxContentLength: number
+    maxBodyLength: number
+    env: Map<string, any>
+    headers: Map<string, string>
+    baseUrl: string
+    method: string // request method
+    url: string
+}
+
+export interface AlertResponseData {
     '@context': NWSContext
     type: NWSResponseType
     features: NWSFeature[]
+    title: string
+    updated: string // timestamp
 }
 
 // @context data
@@ -222,7 +258,7 @@ export interface NWSFeatureProperties {
     areaDesc: string
     geocode: NWSGeocode
     affectedZones: string[]
-    references: string[] // TODO see what this is
+    references: NWSFeatureReference[]
     sent?: string // timestamp
     effective?: string // timestamp
     onset?: string // timestamp
@@ -239,8 +275,8 @@ export interface NWSFeatureProperties {
     senderName: string
     headline: string
     description: string
-    instruction: string
-    response: string // possible type?, so far 'Monitor' | 'Execute'
+    instruction: string | null
+    response: string // possible type?, so far 'Monitor' | 'Execute' | 'Avoid' | 'None'
     parameters: NWSFeatureParameters
 }
 
@@ -257,7 +293,7 @@ export interface NWSGeocode {
 export interface NWSFeatureParameters {
     AWIPSidentifier?: string[] // possible type
     WMOidentifier?: string[] // possible type
-    NWSHeadline?: string[] // ALL CAPS STRING ARRAY!
+    NWSHeadline?: string[]
     BLOCKCHANNEL?: string[] // possible type
     eventMotionDescription?: string[]
     maxWindGust?: string[]
@@ -267,4 +303,9 @@ export interface NWSFeatureParameters {
     eventEndingTime: string[]
 }
 
-
+export interface NWSFeatureReference {
+    '@id': string
+    identifier: string
+    sender: string
+    sent: string // timestamp
+}
