@@ -9,13 +9,10 @@
 /* TYPES */
 export type NWSCoords = [number, number][]
 
-// SQW has subscript 2?? handle that?
-
 // W for WARNINGS
 // A for WATCHES
 // E for EMERGENCIES
 // S for STATEMENTS
-
 export type NWSEASCode = 
     'BZD' | 'CFA' | 'CFW' | 'DSW' | 'EWW' | 'FFA' | 'FFW' | 'FFS' | 'FLA' | 'FLW' | 'FLS' |
     'HWA' | 'HWW' | 'HUA' | 'HUW' | 'HLS' | 'SVA' | 'SVR' | 'SVS' | 'SQW' | 'SMW' | 'SPS' |
@@ -57,13 +54,13 @@ export type NWSEASWeatherEvent =
     'Winter Storm Watch' |
     'Winter Storm Warning'
 
-
 export type NWSEASEvent = 
     'Avalance Watch' |
     'Avalance Warning' |
     'Blue Alert' |
     'Child Abduction Emergency' |
     'Civil Danger Warning' | 
+    'Civil Emergency Message' |
     'Earthquake Warning' | 
     'Evacuation Immediate' |
     'Fire Warning' |
@@ -82,8 +79,64 @@ export type NWSAdminEvent =
     'Required Monthly Test' | 
     'Required Weekly Test'
 
-export type NWSEASEventMap = {
+type NWSEventMap = {
     [key in NWSEASCode]: NWSEASWeatherEvent | NWSEASEvent | NWSAdminEvent
+}
+
+export const NWSEvents: NWSEventMap = {
+    BZD: 'Blizzard Warning', 
+    CFA: 'Coastal Flood Watch',
+    CFW: 'Coastal Flood Warning',
+    DSW: 'Dust Storm Warning',
+    EWW: 'Extreme Wind Warning',
+    FFA: 'Flash Flood Watch',
+    FFW: 'Flash Flood Warning',
+    FFS: 'Flash Flood Statement',
+    FLA: 'Flood Watch',
+    FLW: 'Flood Warning',
+    FLS: 'Flood Statement',
+    HWA: 'High Wind Watch',
+    HWW: 'High Wind Warning',
+    HUA: 'Hurricane Watch',
+    HUW: 'Hurricane Warning',
+    HLS: 'Hurricane Statement',
+    SVA: 'Severe Thunderstorm Watch',
+    SVR: 'Severe Thunderstorm Warning',
+    SVS: 'Severe Weather Statement',
+    SQW: 'Snow Squall Warning',
+    SMW: 'Special Marine Warning',
+    SPS: 'Special Weather Statement',
+    SSA: 'Storm Surge Watch',
+    SSW: 'Storm Surge Warning',
+    TOA: 'Tornado Watch',
+    TOR: 'Tornado Warning',
+    TRA: 'Tropical Storm Watch',
+    TRW: 'Tropical Storm Warning',
+    TSA: 'Tsunami Watch',
+    TSW: 'Tsunami Warning',
+    WSA: 'Winter Storm Watch',
+    WSW: 'Winter Storm Warning',
+    AVA: 'Avalance Watch',
+    AVW: 'Avalance Warning',
+    BLU: 'Blue Alert',
+    CAE: 'Child Abduction Emergency',
+    CDW: 'Civil Danger Warning',
+    CEM: 'Civil Emergency Message',
+    EQW: 'Earthquake Warning',
+    EVI: 'Evacuation Immediate',
+    FRW: 'Fire Warning',
+    HMW: 'Hazardous Materials Warning',
+    LEW: 'Law Enforcement Warning',
+    LAE: 'Local Area Emergency',
+    TOE: '911 Telephone Outage Emergency',
+    NUW: 'Nuclear Power Plant Warning',
+    RHW: 'Radiological Hazard Warning',
+    SPW: 'Shelter in Place Warning',
+    VOW: 'Volcano Warning',
+    ADR: 'Administrative Message',
+    DMO: 'Practice/Demo Warning',
+    RMT: 'Required Monthly Test',
+    RWT: 'Required Weekly Test'
 }
 
 /* ENUMS */
@@ -133,7 +186,6 @@ export enum NWSUrgency {
 }
 
 
-
 /* INTERFACES */
 export interface AlertResponse {
     '@context': Array<string | NWSContextData>
@@ -180,7 +232,7 @@ export interface NWSFeatureProperties {
     headline: string
     description: string
     instruction: string
-    response: string // possible type?, so far 'Monitor'
+    response: string // possible type?, so far 'Monitor' | 'Execute'
     parameters: NWSFeatureParameters
 }
 
