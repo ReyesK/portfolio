@@ -1,14 +1,13 @@
-/* TODOS
-    add enums for zoneIds, areas, regions?? need to find all possible values.. maybe there's a library for the types?
-    figure out optional types vs always available
-    fill enums
-    refactor into separate files
+// http://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.pdf
 
-    more types: zones, offices, stations, 
+/* TODOS
+    - set optional types vs always available
+    - more types: zones, offices, stations, 
     https://api.weather.gov/zones/forecast/IDZ060
     https://api.weather.gov/zones/county/IDC007
     https://api.weather.gov/offices/PIH
     https://api.weather.gov/stations/ITD35
+    - refactor into separate files- possibly drop NWS prefix and put it in a NWS.ts file
 */
 
 /* TYPES */
@@ -171,33 +170,70 @@ export enum NWSPropertyType {
 
 export enum NWSAlertStatus {
     Actual = 'Actual',
-    Test = 'Test'
+    Exercise = 'Exercise',
+    System = 'System',
+    Test = 'Test',
+    Draft = 'Draft'
 }
 
 export enum NWSAlertMessageType {
     Alert = 'Alert',
+    Update = 'Update',
+    Cancel = 'Cancel',
+    Ack = 'Ack', // not currently used
+    Error = 'Error' // not currently used
 }
 
 export enum NWSCategory { 
-    Met = 'Met',
+    Get = 'Geo', // geophysical
+    Met = 'Met', // meteorological
+    Saftey = 'Saftey',
+    Security = 'Security',
+    Rescue = 'Rescue',
+    Fire = 'Fire',
+    Health = 'Health',
+    Env = 'Env', // pollution and other environmental
+    Transport = 'Transport',
+    Infra = 'Infra', //Utility, telecommunication, other non-transport infrastructure
+    CBRNE = 'CBRNE', // – Chemical, Biological, Radiological, Nuclear or High-Yield Explosive threat or attack
+    Other = 'Other',
     Unknown = 'Unknown'
 }
 
 export enum NWSSeverity {
-    Minor = 'Minor',
+    Extreme = 'Extreme',
     Severe = 'Severe',
+    Moderate = 'Moderate',
+    Minor = 'Minor',
     Unknown = 'Unknown'
 }
 
 export enum NWSCertainty {
     Observed = 'Observed',
+    Likely = 'Likely',
+    Possible = 'Possible',
+    Unlikely = 'Unlikely',
     Unknown = 'Unknown'
 }
 
 export enum NWSUrgency {
-    Expected = 'Expected',
     Immediate = 'Immediate',
+    Expected = 'Expected',
+    Future = 'Future',
+    Past = 'Past',
     Unknown = 'Unknown'
+}
+
+export enum NWSAlertResponseType {
+    Shelter = 'Shelter',
+    Evacuate = 'Evacuate',
+    Prepare = 'Prepare',
+    Execute = 'Execute', 
+    Avoid = 'Avoid', 
+    Monitor = 'Monitor', 
+    Assess = 'Assess',
+    AllClear = 'AllClear',
+    None = 'None'
 }
 
 type NWSContext = Array<string | NWSContextData>
@@ -276,7 +312,7 @@ export interface NWSFeatureProperties {
     headline: string
     description: string
     instruction: string | null
-    response: string // possible type?, so far 'Monitor' | 'Execute' | 'Avoid' | 'None'
+    response: NWSAlertResponseType | NWSAlertResponseType[]
     parameters: NWSFeatureParameters
 }
 
