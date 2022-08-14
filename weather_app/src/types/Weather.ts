@@ -3,7 +3,12 @@
     figure out optional types vs always available
     fill enums
     refactor into separate files
-    event -> code mapping https://www.weather.gov/nwr/eventcodes
+
+    more types: zones, offices, stations, 
+    https://api.weather.gov/zones/forecast/IDZ060
+    https://api.weather.gov/zones/county/IDC007
+    https://api.weather.gov/offices/PIH
+    https://api.weather.gov/stations/ITD35
 */
 
 /* TYPES */
@@ -82,7 +87,7 @@ export type NWSAdminEvent =
 type NWSEventMap = {
     [key in NWSEASCode]: NWSEASWeatherEvent | NWSEASEvent | NWSAdminEvent
 }
-
+// event -> code mapping https://www.weather.gov/nwr/eventcodes
 export const NWSEvents: NWSEventMap = {
     BZD: 'Blizzard Warning', 
     CFA: 'Coastal Flood Watch',
@@ -144,7 +149,7 @@ export const NWSEvents: NWSEventMap = {
 export enum AlertFilterType {
     Area = 'area',
     Zone = 'zone',
-    Region = 'region'
+    Region = 'region',
 }
 
 export enum NWSResponseType {
@@ -154,10 +159,12 @@ export enum NWSResponseType {
 
 export enum NWSGeometryType {
     Polygon = 'Polygon',
+    Point = 'Point',
 }
 
 export enum NWSPropertyType {
-    WXAlert = 'wx:Alert'
+    WXAlert = 'wx:Alert',
+    WXZone = 'wx:Zone'
 }
 
 
@@ -178,17 +185,18 @@ export enum NWSSeverity {
 }
 
 export enum NWSCertainty {
-    Observed = 'Observed'
+    Observed = 'Observed',
 }
 
 export enum NWSUrgency {
-    Expected = 'Expected'
+    Expected = 'Expected',
 }
 
+type NWSContext = Array<string | NWSContextData>
 
 /* INTERFACES */
 export interface AlertResponse {
-    '@context': Array<string | NWSContextData>
+    '@context': NWSContext
     type: NWSResponseType
     features: NWSFeature[]
 }
@@ -258,3 +266,5 @@ export interface NWSFeatureParameters {
     VTEC: string[]
     eventEndingTime: string[]
 }
+
+
