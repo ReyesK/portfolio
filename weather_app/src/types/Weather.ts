@@ -1,12 +1,6 @@
 // http://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.pdf
 
 /* TODOS
-    - set optional types vs always available
-    - more types: zones, offices, stations, 
-    https://api.weather.gov/zones/forecast/IDZ060
-    https://api.weather.gov/zones/county/IDC007
-    https://api.weather.gov/offices/PIH
-    https://api.weather.gov/stations/ITD35
     - refactor into separate files- possibly drop NWS prefix and put it in a NWS.ts file
 */
 
@@ -164,7 +158,8 @@ export enum NWSGeometryType {
 
 export enum NWSPropertyType {
     WXAlert = 'wx:Alert',
-    WXZone = 'wx:Zone'
+    WXZone = 'wx:Zone',
+    WXObservationStation = 'wx:ObservationStation'
 }
 
 
@@ -236,6 +231,12 @@ export enum NWSAlertResponseType {
     None = 'None'
 }
 
+export enum NWSAlertScope {
+    Public = 'Public',
+    Restricted = 'Restricted',
+    Private = 'Private'
+}
+
 type NWSContext = Array<string | NWSContextData>
 
 /* INTERFACES */
@@ -273,11 +274,30 @@ export interface AlertResponseData {
     updated: string // timestamp
 }
 
+export interface ContextObject {
+    '@id'?: string
+    '@type'?: string
+}
+
 // @context data
 export interface NWSContextData {
     '@version': string
-    wx: string
-    '@vocab': string
+    wx?: string
+    '@vocab'?: string
+    s?: string
+    geo?: string
+    unit?: string
+    geometry?: NWSGeometry
+    city?: string
+    state?: string
+    distance?: ContextObject
+    bearing?: ContextObject
+    value?: ContextObject
+    unitCode?: ContextObject
+    forecastOffice?: ContextObject
+    forecastGridData?: ContextObject
+    publicZone?: ContextObject
+    county?: ContextObject
 }
 
 export interface NWSFeature {
@@ -317,6 +337,7 @@ export interface NWSFeatureProperties {
 }
 
 export interface NWSGeometry {
+    '@id'?: string
     type: NWSGeometryType
     coordinates: NWSCoords[]
 }
@@ -344,4 +365,80 @@ export interface NWSFeatureReference {
     identifier: string
     sender: string
     sent: string // timestamp
+}
+
+export interface NWSForecastResponse {
+    '@context': NWSContextData
+    id: string
+    type: NWSResponseType.Feature
+    geometry: NWSGeometry
+    properties: NWSZone[]
+}
+
+export interface NWSZone {
+    '@id': string
+    '@type': NWSPropertyType
+    id: string
+    type: string
+    name: string
+    effectiveDate: string
+    expirationDate: string
+    state: string // state abbreviation
+    cwa: string[] // figure out what this is. office ids?
+    forecastOffices: string[] // array of forecast office ids (urls)
+    timeZone: string[]
+    observationStations: string[]
+    radarStation: string | null
+}
+
+export interface NWSOffice {
+    '@context': NWSContextData
+    '@type': string // possible type so far 'GovernmentOrganization'
+    '@id': string
+    name: string
+    address: NWSAddress
+    telephone: string
+    faxNumber: string
+    email: string
+    sameAs: string
+    nwsRegion: string
+    parentOrganization: string
+    responsibleCounties: string[]
+    responsibleForecastZones: string[]
+    responsibleFireZones: string[]
+    approvedObservationStations: string[]
+}
+
+export interface NWSAddress {
+    '@type': string // possible type so far 'PostalAddress'
+    streetAddress: string
+    addressLocality: string
+    addressRegion: string
+    postalCode: string
+}
+
+export interface NWSStationResponse {
+    '@context': NWSContext
+    id: string
+    type: NWSResponseType
+    gemoetry: NWSGeometry
+    properties: NWSStation[]
+}
+
+export interface NWSStation {
+    '@id': string
+    '@type': NWSPropertyType
+    elevation: NWSElevation
+    stationIdentifier: string
+    name: string
+    timeZone: string
+    forecast: string
+    county: string
+    fireWeatherZone: string
+
+}
+
+export interface NWSElevation {
+    unitCode: string
+    value: number
 }
