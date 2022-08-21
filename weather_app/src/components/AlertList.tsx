@@ -1,19 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import WeatherService from "services/WeatherService";
+import { NWSFeature } from "types/Weather";
 // import { AlertFilterType } from "types/Weather";
+
+interface AlertProps {
+    alert: NWSFeature
+}
 
 const AlertList: React.FC = () => {
 
-    const [alerts, setAlerts] = useState({});
+    const [alerts, setAlerts] = useState<NWSFeature[]>([]);
 
     const fetchData = useCallback(
         async () => {
-            // TODO type for response 
-            const res = await WeatherService.fetchAlerts()
-            console.log(res)
-            setAlerts(res)
-            // setAlerts((res.data as any)['@context']) // save context somewhere.
-            // setAlerts(res.data.features[0].properties.instruction as any)
+            const alertResponse = await WeatherService.fetchAlerts()
+            if (!alertResponse) return
+            const alerts = alertResponse.features        
+            console.log(alerts)
+            setAlerts(alerts)
         }, []
     );
 
@@ -21,11 +25,27 @@ const AlertList: React.FC = () => {
         fetchData();
     }, [fetchData]);
 
+    // TODO move to component
+    const Alert = ({alert}: AlertProps): JSX.Element => {
+        if (!alert) return <></>
+        return <>
+            <div className="alert-container">
+                <div><b>{alert.properties.areaDesc}</b></div>
+                <div>{alert.properties.description}</div>
+                <div>{alert.properties.instruction}</div>
+            </div>
+        </>
+    }
+
+    const alertList: JSX.Element[] = alerts.map((alert, idx) => {
+        return <Alert alert={alert} key={idx}/>
+    });
+
     return (
         <div>
             <h1>Alert List</h1>
             <div>
-                { JSON.stringify(alerts) }
+                {alertList}
             </div>
         </div>
     );

@@ -2,6 +2,7 @@
 
 /* TODOS
     - refactor into separate files- possibly drop NWS prefix and put it in a NWS.ts file
+    - check types against https://www.weather.gov/documentation/services-web-api#/
 */
 
 /* TYPES */
@@ -241,13 +242,20 @@ type NWSContext = Array<string | NWSContextData>
 
 /* INTERFACES */
 
-export interface AlertResponse {
-    data: AlertResponseData
+interface BaseResponse {
     status: number
     statusText: string
     headers: Map<string, string>
     config: NWSResponseConfig
     request: any
+}
+
+export interface AlertResponse extends BaseResponse {
+    data: AlertResponseData
+}
+
+export interface AlertCountResponse extends BaseResponse {
+    data: AlertCountResponseData
 }
 
 export interface NWSResponseConfig {
@@ -272,6 +280,15 @@ export interface AlertResponseData {
     features: NWSFeature[]
     title: string
     updated: string // timestamp
+}
+
+export interface AlertCountResponseData {
+    total: number
+    land: number
+    marine: number
+    regions: Map<string, number>
+    areas: Map<string, number>
+    zones: Map<string, number>
 }
 
 export interface ContextObject {
@@ -442,3 +459,4 @@ export interface NWSElevation {
     unitCode: string
     value: number
 }
+

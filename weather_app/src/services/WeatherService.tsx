@@ -1,5 +1,5 @@
 import axios from "http-common";
-import { AlertFilterType } from "types/Weather";
+import { AlertCountResponse, AlertCountResponseData, AlertFilterType, AlertResponse, AlertResponseData } from "types/Weather";
 
 interface FetchFilter {
     type: AlertFilterType
@@ -13,13 +13,23 @@ interface FetchFilter {
  * Note: NWS docs have examples of both /alerts/active/area/{area} and /alerts/active?area={area} endpoints.
  * they seem to return the same data, using the first version here.
  */
-const fetchAlerts = async (filter?: FetchFilter) => {
+const fetchAlerts = async (filter?: FetchFilter): Promise<AlertResponseData | undefined> => {
     const endpoint = buildEndpoint(filter);
-    return await axios.get<any>(endpoint);
+    const response = await axios.get<AlertResponseData>(endpoint);
+    if (!response) {
+        console.error(`error fetching alerts ${filter}`);
+        return;
+    }
+    return response.data;
 };
 
-const fetchAlertCounts = async () => {
-    return await axios.get<any>('/alerts/count');
+const fetchAlertCounts = async (): Promise<AlertCountResponseData | undefined> => {
+    const response = await axios.get<AlertCountResponseData>('/alerts/active/count');
+    if (!response) {
+        console.error(`error fetching alert counts`);
+        return;
+    }
+    return response.data;
 };
 
 /**
