@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+
 import WeatherService from "services/WeatherService";
 import { NWSFeature } from "types/Weather";
-// import { AlertFilterType } from "types/Weather";
+import { AlertFilterType } from "types/Weather";
+import 'styles/main.css';
 
 interface AlertProps {
     alert: NWSFeature
@@ -13,7 +15,7 @@ const AlertList: React.FC = () => {
 
     const fetchData = useCallback(
         async () => {
-            const alertResponse = await WeatherService.fetchAlerts()
+            const alertResponse = await WeatherService.fetchAlerts({type: AlertFilterType.Area, target: 'CO'})
             if (!alertResponse) return
             const alerts = alertResponse.features        
             console.log(alerts)
@@ -29,8 +31,8 @@ const AlertList: React.FC = () => {
     const Alert = ({alert}: AlertProps): JSX.Element => {
         if (!alert) return <></>
         return <>
-            <div className="alert-container">
-                <div><b>{alert.properties.areaDesc}</b></div>
+            <div className="alert-container alert-text">
+                <div style={{}}><b>{alert.properties.areaDesc}</b></div>
                 <div>{alert.properties.description}</div>
                 <div>{alert.properties.instruction}</div>
             </div>

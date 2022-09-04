@@ -1,5 +1,5 @@
 import axios from "http-common";
-import { AlertCountResponse, AlertCountResponseData, AlertFilterType, AlertResponse, AlertResponseData } from "types/Weather";
+import { AlertCountResponseData, AlertFilterType, AlertResponseData } from "types/Weather";
 
 interface FetchFilter {
     type: AlertFilterType
