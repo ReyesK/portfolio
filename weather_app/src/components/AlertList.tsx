@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
+import classnames from 'classnames';
 
 import WeatherService from "services/WeatherService";
 import { NWSFeature } from "types/Weather";
 import { AlertFilterType } from "types/Weather";
-import 'styles/main.css';
+import styles from 'styles/main.module.css';
 
 interface AlertProps {
     alert: NWSFeature
@@ -31,7 +32,7 @@ const AlertList: React.FC = () => {
     const Alert = ({alert}: AlertProps): JSX.Element => {
         if (!alert) return <></>
         return <>
-            <div className="alert-container alert-text">
+            <div className={classnames(styles.alertText, styles.alertContainer)}>
                 <div style={{}}><b>{alert.properties.areaDesc}</b></div>
                 <div>{alert.properties.description}</div>
                 <div>{alert.properties.instruction}</div>
