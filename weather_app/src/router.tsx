@@ -1,5 +1,5 @@
-import AlertList from "components/AlertList"
-import ForecastList from "components/ForecastList"
+import AlertList from "components/alerts/AlertList"
+import ForecastList from "components/forecast/ForecastList"
 import { Routes, Route } from "react-router-dom"
 
 

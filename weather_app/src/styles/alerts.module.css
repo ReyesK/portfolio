@@ -8,3 +8,11 @@
     margin: 1rem 0rem 1rem 0rem;
     text-align: left;
 }
+
+.alertSelectLabel {
+    margin: 0rem 1rem;
+}
+
+.alertSelectContainer > ul {
+    background-color: white;
+}

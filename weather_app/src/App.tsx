@@ -1,6 +1,6 @@
 import 'App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavigationLinks from 'components/NavigationLinks';
+import NavigationLinks from 'components/navigation/NavigationLinks';
 import Router from 'router';
 
 function App() {
