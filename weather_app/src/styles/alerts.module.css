@@ -1,14 +1,44 @@
-.alertText {
-    color: grey;
-}
-
 .alertContainer {
     border: .1rem solid #0E75A8;
     padding: .5rem;
     margin: 1rem 0rem 1rem 0rem;
     text-align: left;
+    color: grey;
 }
 
 .alertSelectLabel {
     margin: 0rem 1rem;
+}
+
+/* NWSSeverity colors - get better colors? - make the colors variables? */
+.Extreme {
+    color: purple;
+}
+.Severe {
+    color: red;
+}
+.Moderate {
+    color: orange;
+}
+.Minor {
+    color: green;
+}
+.Unknown {
+    color: gray;
+}
+
+.Extreme-border {
+    border-color: purple;
+}
+.Severe-border {
+    border-color: red;
+}
+.Moderate-border {
+    border-color: orange;
+}
+.Minor-border {
+    border-color: green;
+}
+.Unknown-border {
+    border-color: gray;
 }

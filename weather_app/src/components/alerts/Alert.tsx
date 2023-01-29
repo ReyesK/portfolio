@@ -8,11 +8,14 @@ interface AlertProps {
 
 const Alert = ({alert}: AlertProps): JSX.Element => {
     if (!alert) return <></>
+
+    const {properties} = alert // get alert properties for easier access
+    
     return <>
-        <div className={classnames(styles.alertText, styles.alertContainer)}>
-            <div style={{}}><b>{alert.properties.areaDesc}</b></div>
-            <div>{alert.properties.description}</div>
-            <div>{alert.properties.instruction}</div>
+        <div className={classnames(styles.alertContainer, styles[`${properties.severity}-border`])}>
+            <div style={{}}><b>{properties.areaDesc}</b></div>
+            <div>{properties.description}</div>
+            <div>{properties.instruction}</div>
         </div>
     </>
 }
