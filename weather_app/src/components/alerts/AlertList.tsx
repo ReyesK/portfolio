@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, SyntheticEvent } from "react";
 
 import WeatherService from "services/WeatherService";
 import { NWSFeature } from "types/Weather";
@@ -7,7 +7,7 @@ import { JoyUIEvent, US_STATES } from "types/Base";
 import Alert from "components/alerts/Alert";
 import style from 'styles/alerts.module.css';
 
-import { Select, Option, Grid } from "@mui/joy";
+import { Select, Option, Grid, Autocomplete } from "@mui/joy";
 
 
 
@@ -31,8 +31,8 @@ const AlertList: React.FC = () => {
         fetchData(selectedArea);
     }, [fetchData, selectedArea]);
 
-    const handleSelectedAreaChange = (e: JoyUIEvent, v: string | null) => {
-        setSelectedArea(v)
+    const handleSelectedAreaChange = (e: SyntheticEvent, v: {label: string, id: string} | null) => {
+        setSelectedArea(v?.id)
     }
 
     const noAlerts: JSX.Element = selectedArea ? <>All clear!</> : <>Select an area</>;
@@ -41,18 +41,21 @@ const AlertList: React.FC = () => {
         return <Alert alert={alert} key={idx}/>
     })}</> : noAlerts;
 
+    // TODO refactor to its own component
     const alertHeader: JSX.Element = <>
         <Grid container>
-            <Grid xs={4} className={style.alertSelect}>
-                <Select
+            <Grid xs={4}>
+                <Autocomplete
                     placeholder="Select an area..."
-                    onChange={handleSelectedAreaChange}>
-                    <div className={style.alertSelectContainer}>{
-                        Object.entries(US_STATES).map(([k, v]) => {
-                            return <Option key={k} value={k}>{v}</Option>
-                        })
-                    }</div>
-                </Select>
+                    onChange={handleSelectedAreaChange} 
+                    options={Object.entries(US_STATES).map(([k, v]) => ({label: v, id: k}))}
+                    isOptionEqualToValue={(o, v) => o.id === v.id}
+                    slotProps={{
+                        listbox: {
+                            sx: {backgroundColor: 'white'}
+                        },
+                    }}
+                />
             </Grid>
         </Grid>
     </>
