@@ -50,11 +50,6 @@ const AlertList: React.FC = () => {
                     onChange={handleSelectedAreaChange} 
                     options={Object.entries(US_STATES).map(([k, v]) => ({label: v, id: k}))}
                     isOptionEqualToValue={(o, v) => o.id === v.id}
-                    slotProps={{
-                        listbox: {
-                            sx: {backgroundColor: 'white'}
-                        },
-                    }}
                 />
             </Grid>
         </Grid>
