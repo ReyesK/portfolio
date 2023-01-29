@@ -13,6 +13,12 @@
     margin: 0rem 1rem;
 }
 
-.alertSelectContainer > ul {
+.alertSelect > ul {
+    background-color: white;
+}
+
+.alertSelectContainer {
+    height: 69vh;
+    overflow: auto;
     background-color: white;
 }

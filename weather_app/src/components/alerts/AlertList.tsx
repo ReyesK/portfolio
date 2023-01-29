@@ -35,7 +35,7 @@ const AlertList: React.FC = () => {
         setSelectedArea(v)
     }
 
-    const noAlerts: JSX.Element = <>All clear!</>;
+    const noAlerts: JSX.Element = selectedArea ? <>All clear!</> : <>Select an area</>;
 
     const alertList: JSX.Element = alerts.length ? <>{alerts.map((alert, idx) => {
         return <Alert alert={alert} key={idx}/>
@@ -43,15 +43,15 @@ const AlertList: React.FC = () => {
 
     const alertHeader: JSX.Element = <>
         <Grid container>
-            <Grid xs={4} className={style.alertSelectContainer}>
+            <Grid xs={4} className={style.alertSelect}>
                 <Select
                     placeholder="Select an area..."
                     onChange={handleSelectedAreaChange}>
-                    <>{
+                    <div className={style.alertSelectContainer}>{
                         Object.entries(US_STATES).map(([k, v]) => {
-                            return <Option value={k}>{v}</Option>
+                            return <Option key={k} value={k}>{v}</Option>
                         })
-                    }</>
+                    }</div>
                 </Select>
             </Grid>
         </Grid>
